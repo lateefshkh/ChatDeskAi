@@ -1,11 +1,15 @@
 // drizzle.config.ts
 //
 // Drizzle Kit configuration for migrations.
-// `npx drizzle-kit generate` chalane pe migration files banati hain.
+//
+// Includes both schemas:
+// - schema.ts (tenant tables, RLS enforced)
+// - auth-schema.ts (Better Auth tables, RLS bypass)
 //
 // Ye kyun zaroori hai:
-// - Schema changes ke liye migration files zaroori hain (production pe direct ALTER nahi).
-// - dbCredentials = DATABASE_ADMIN_URL (owner role, kyunki schema changes ke liye elevated permission chahiye).
+// - Drizzle Kit ko sari tables ka pata hona chahiye, warna migration incomplete.
+// - dbCredentials = DATABASE_ADMIN_URL (owner role, migrations ke liye).
+// - strict: true = destructive changes pe confirmation.
 
 import { defineConfig } from "drizzle-kit";
 import { config } from "dotenv";
@@ -13,7 +17,7 @@ import { config } from "dotenv";
 config({ path: ".env.local" });
 
 export default defineConfig({
-  schema: "./src/lib/db/schema.ts",
+  schema: ["./src/lib/db/schema.ts", "./src/lib/db/auth-schema.ts"],
   out: "./drizzle",
   dialect: "postgresql",
   dbCredentials: {
