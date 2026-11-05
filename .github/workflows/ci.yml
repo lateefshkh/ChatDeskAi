@@ -1,0 +1,65 @@
+# .github/workflows/ci.yml
+#
+# Purpose: CI pipeline on every push/PR.
+#
+# Steps:
+# - Install deps (npm ci — lockfile respect)
+# - Typecheck (tsc --noEmit)
+# - Lint (eslint)
+# - Tests (vitest run)
+# - npm audit (high severity)
+# - Gitleaks (secret scan)
+# - Semgrep (OWASP patterns)
+#
+# Ye kyun zaroori hai:
+# - Typecheck + lint + tests = broken code merge nahi hota.
+# - npm audit = vulnerable dependency pakdi jati hai.
+# - Gitleaks = secrets accidentally commit nahi hote.
+# - Semgrep = OWASP Top 10 patterns automatically detect hote hain.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test:run
+
+      - name: npm audit
+        run: npm audit --audit-level=high
+        continue-on-error: false
+
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Semgrep
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: p/owasp-top-ten

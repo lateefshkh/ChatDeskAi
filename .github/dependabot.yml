@@ -1,0 +1,27 @@
+# .github/dependabot.yml
+#
+# Purpose: Automated dependency updates.
+#
+# Design:
+# - Weekly npm dependency updates.
+# - Security updates prioritized (grouped).
+# - Max 5 open PRs to avoid noise.
+#
+# Ye kyun zaroori hai:
+# - Outdated dependencies mein known CVEs hote hain.
+# - Manual tracking impossible hai (sainkron packages).
+# - Dependabot PR banata hai, human review karta hai, CI verify karta hai.
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      security:
+        patterns:
+          - "*"
+        update-types:
+          - "security"
