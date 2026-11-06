@@ -13,7 +13,13 @@ import type { NextRequest } from "next/server";
 function generateNonce(): string {
   const array = new Uint8Array(16);
   crypto.getRandomValues(array);
-  return Buffer.from(array).toString("base64");
+  // Edge runtime compatible: use btoa instead of Buffer
+  // Convert Uint8Array to binary string
+  let binary = "";
+  for (let i = 0; i < array.length; i++) {
+    binary += String.fromCharCode(array[i]);
+  }
+  return btoa(binary);
 }
 
 export function proxy(request: NextRequest) {
@@ -35,9 +41,7 @@ export function proxy(request: NextRequest) {
     `style-src 'self' 'unsafe-inline' https://checkout.razorpay.com`,
     `img-src 'self' data: https: https://*.razorpay.com`,
     `font-src 'self'`,
-    // Connect-src includes Razorpay API and lumberjack (telemetry)
     `connect-src 'self' ${process.env.NEXT_PUBLIC_APP_URL || ""} https://challenges.cloudflare.com https://api.razorpay.com https://lumberjack.razorpay.com https://*.razorpay.com`,
-    // Frame-src includes Razorpay checkout iframe
     `frame-src 'self' https://challenges.cloudflare.com https://api.razorpay.com https://checkout.razorpay.com`,
     `object-src 'none'`,
     `base-uri 'self'`,
