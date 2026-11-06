@@ -35,7 +35,7 @@ async function DashboardContent() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
         <StatCard
           label="Sources"
           value={stats.sources.total}
@@ -56,6 +56,15 @@ async function DashboardContent() {
           value={stats.messages.unanswered}
           hint="Questions bot couldn't answer"
           highlight={stats.messages.unanswered > 0}
+        />
+        {/* NAYA QUOTA CARD */}
+        <StatCard
+          label="Chats used"
+          value={stats.quota.used}
+          hint={`${stats.quota.total - stats.quota.used} left this period`}
+          highlight={
+            stats.quota.total > 0 && stats.quota.used >= stats.quota.total
+          }
         />
       </div>
 
@@ -213,8 +222,8 @@ export default function DashboardPage() {
       fallback={
         <div className="space-y-4">
           <div className="h-8 w-64 bg-neutral-200 rounded animate-pulse" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((i) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="h-32 bg-neutral-200 rounded-lg animate-pulse" />
             ))}
           </div>

@@ -25,13 +25,25 @@ async function DashboardHeader() {
             </span>
           )}
           
-          {/* YAHAN HAI NAVIGATION: Dashboard aur Billing */}
+          {/* UPDATED NAVIGATION: Dashboard, Sources, Leads, Billing */}
           <nav className="hidden md:flex items-center gap-4 ml-4">
             <Link 
               href="/dashboard" 
               className="text-sm font-medium text-neutral-900 hover:text-neutral-700"
             >
               Dashboard
+            </Link>
+            <Link 
+              href="/sources" 
+              className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors"
+            >
+              Sources
+            </Link>
+            <Link 
+              href="/leads" 
+              className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors"
+            >
+              Leads
             </Link>
             <Link 
               href="/billing" 

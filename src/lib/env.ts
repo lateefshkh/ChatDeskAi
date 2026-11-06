@@ -15,8 +15,6 @@
 import { z } from "zod";
 
 // ─── Helper: empty string → undefined ─────────────────────────────────────
-// .env.local mein `KEY=` likhna common hai. Yeh empty string ko undefined
-// banata hai taake `.optional()` properly kaam kare.
 const emptyToUndefined = (val: unknown) =>
   typeof val === "string" && val.trim() === "" ? undefined : val;
 
@@ -25,12 +23,10 @@ const serverSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 
   // Database - do connections (RLS ke liye zaroori)
-  // DATABASE_URL = app_user (RLS enforced)
-  // DATABASE_ADMIN_URL = owner (RLS bypass - migrations, seed, auth lookup)
   DATABASE_URL: z.string().url(),
   DATABASE_ADMIN_URL: z.string().url(),
 
-  // Better Auth (Phase 1)
+  // Better Auth
   BETTER_AUTH_SECRET: z.string().min(32, "BETTER_AUTH_SECRET must be 32+ chars"),
   BETTER_AUTH_URL: z.string().url(),
 
@@ -40,10 +36,7 @@ const serverSchema = z.object({
 
   // LLM providers
   GROQ_API_KEY: z.string().min(1),
-  EMBEDDING_API_KEY: z.preprocess(
-    emptyToUndefined,
-    z.string().optional()
-  ),
+  // EMBEDDING_API_KEY: REMOVED — ab local Transformers.js use ho raha hai
 
   // Razorpay
   RAZORPAY_KEY_ID: z.string().min(1),
@@ -53,9 +46,10 @@ const serverSchema = z.object({
   // Cloudflare Turnstile (server-side verify)
   TURNSTILE_SECRET_KEY: z.string().min(1),
 
-  // Notifications
+  // Notifications (WhatsApp - Meta Cloud API)
   RESEND_API_KEY: z.string().min(1),
-  TELEGRAM_BOT_TOKEN: z.string().min(1),
+  WHATSAPP_PHONE_NUMBER_ID: z.preprocess(emptyToUndefined, z.string().optional()),
+  WHATSAPP_ACCESS_TOKEN: z.preprocess(emptyToUndefined, z.string().optional()),
 
   // Security - field-level encryption + IP hashing
   FIELD_ENCRYPTION_KEY: z
@@ -67,7 +61,7 @@ const serverSchema = z.object({
   INNGEST_EVENT_KEY: z.string().min(1),
   INNGEST_SIGNING_KEY: z.string().min(1),
 
-  // Sentry (optional in dev) - empty string ko undefined banate hain
+  // Sentry (optional)
   SENTRY_DSN: z.preprocess(emptyToUndefined, z.string().url().optional()),
 });
 

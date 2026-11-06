@@ -6,36 +6,18 @@
 // - Single function `getDashboardStats(tenantId)` — one DB round-trip for all counts.
 // - Uses withTenant() so RLS enforced.
 // - Returns typed object for UI consumption.
-//
-// Ye kyun zaroori hai:
-// - Dashboard ko 5+ alag queries ki zaroorat nahi — ek se sab mil jata hai.
-// - RLS enforce hota hai, tenant isolation guaranteed.
 
 import { eq, and, sql } from "drizzle-orm";
 import { withTenant } from "@/lib/db/with-tenant";
-import { sources, chunks, conversations, messages, leads } from "@/lib/db/schema";
+import { sources, chunks, conversations, messages, leads, tenants } from "@/lib/db/schema";
 
 export interface DashboardStats {
-  sources: {
-    total: number;
-    ready: number;
-    processing: number;
-    failed: number;
-  };
-  chunks: {
-    total: number;
-  };
-  conversations: {
-    total: number;
-  };
-  messages: {
-    total: number;
-    unanswered: number;
-  };
-  leads: {
-    total: number;
-    last7Days: number;
-  };
+  sources: { total: number; ready: number; processing: number; failed: number };
+  chunks: { total: number };
+  conversations: { total: number };
+  messages: { total: number; unanswered: number };
+  leads: { total: number; last7Days: number };
+  quota: { used: number; total: number };
 }
 
 /**
@@ -56,6 +38,7 @@ export async function getDashboardStats(
       unansweredResult,
       leadsResult,
       leadsRecentResult,
+      quotaResult, // NAYA
     ] = await Promise.all([
       // Sources: total + by status
       tx
@@ -110,6 +93,16 @@ export async function getDashboardStats(
         .where(
           and(eq(leads.tenantId, tenantId), sql`created_at >= ${sevenDaysAgo}`)
         ),
+
+      // Quota (NAYA)
+      tx
+        .select({
+          used: tenants.quotaUsedChats,
+          total: tenants.quotaMonthlyChats,
+        })
+        .from(tenants)
+        .where(eq(tenants.id, tenantId))
+        .limit(1),
     ]);
 
     return {
@@ -128,6 +121,10 @@ export async function getDashboardStats(
       leads: {
         total: leadsResult[0]?.total ?? 0,
         last7Days: leadsRecentResult[0]?.total ?? 0,
+      },
+      quota: {
+        used: quotaResult[0]?.used ?? 0,
+        total: quotaResult[0]?.total ?? 0,
       },
     };
   });
