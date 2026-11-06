@@ -3,15 +3,9 @@
 // Purpose: Security headers + CSP nonce on every response.
 //
 // NOTE: Next.js 16 renamed `middleware.ts` → `proxy.ts`.
-// The function name also changes from `middleware` to `proxy`.
 //
 // IMPORTANT: Proxy is defense-in-depth, NOT the only auth check.
 // Every route handler, page, and DAL call re-checks auth/session separately.
-//
-// Ye kyun zaroori hai:
-// - CSP bina nonce ke XSS attacks block nahi karta.
-// - HSTS MITM downgrade attacks rokta hai.
-// - Proxy bypass ho sakta hai (direct fn calls in tests), isliye route-level auth re-check zaroori.
 
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
@@ -34,14 +28,17 @@ export function proxy(request: NextRequest) {
 
   response.headers.set("x-nonce", nonce);
 
+  // CSP: nonce-based, with Razorpay domains allowed
   const csp = [
     `default-src 'self'`,
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
-    `style-src 'self' 'unsafe-inline'`,
-    `img-src 'self' data: https:`,
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://checkout.razorpay.com https://*.razorpay.com${isDev ? " 'unsafe-eval'" : ""}`,
+    `style-src 'self' 'unsafe-inline' https://checkout.razorpay.com`,
+    `img-src 'self' data: https: https://*.razorpay.com`,
     `font-src 'self'`,
-    `connect-src 'self' ${process.env.NEXT_PUBLIC_APP_URL || ""} https://challenges.cloudflare.com`,
-    `frame-src 'self' https://challenges.cloudflare.com`,
+    // Connect-src includes Razorpay API and lumberjack (telemetry)
+    `connect-src 'self' ${process.env.NEXT_PUBLIC_APP_URL || ""} https://challenges.cloudflare.com https://api.razorpay.com https://lumberjack.razorpay.com https://*.razorpay.com`,
+    // Frame-src includes Razorpay checkout iframe
+    `frame-src 'self' https://challenges.cloudflare.com https://api.razorpay.com https://checkout.razorpay.com`,
     `object-src 'none'`,
     `base-uri 'self'`,
     `form-action 'self'`,
