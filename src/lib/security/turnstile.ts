@@ -25,8 +25,8 @@ interface TurnstileVerifyResponse {
 /**
  * Verify a Turnstile token with Cloudflare.
  *
- * @param token — Turnstile token from client
- * @param remoteIp — optional client IP for additional validation
+ * @param token - Turnstile token from client
+ * @param remoteIp - optional client IP for additional validation
  * @returns { success: boolean, error?: string }
  */
 export async function verifyTurnstile(

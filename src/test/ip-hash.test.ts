@@ -31,7 +31,7 @@ describe("hashIp", () => {
 
   it("throws on empty or non-string input", () => {
     expect(() => hashIp("")).toThrow();
-    // @ts-expect-error — testing invalid runtime input
+    // @ts-expect-error - testing invalid runtime input
     expect(() => hashIp(null)).toThrow();
   });
 
@@ -60,7 +60,7 @@ describe("safeCompare", () => {
   });
 
   it("handles unicode correctly (no accidental match on byte difference)", () => {
-    // "é" composed vs decomposed — different byte sequences, should NOT match
+    // "é" composed vs decomposed - different byte sequences, should NOT match
     const composed = "\u00e9";
     const decomposed = "e\u0301";
     expect(safeCompare(composed, decomposed)).toBe(false);

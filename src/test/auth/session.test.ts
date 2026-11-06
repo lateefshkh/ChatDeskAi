@@ -55,5 +55,5 @@ describe("getSessionContext", () => {
   });
 
   // Note: Deeper tests (user+tenant lookup) require DB mock chain setup.
-  // We keep this test file minimal — full integration tests in Step 2D.
+  // We keep this test file minimal - full integration tests in Step 2D.
 });

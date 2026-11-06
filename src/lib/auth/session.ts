@@ -12,7 +12,7 @@
 // - Tenant session se derive hota hai, kabhi client input se nahi.
 // - Agar attacker session cookie forge kare to Better Auth signature check fail karega.
 // - Tenant lookup admin connection se hota hai kyunki user ka tenant resolve karna hai
-//   (RLS ke liye pehle tenantId chahiye — chicken-and-egg problem).
+//   (RLS ke liye pehle tenantId chahiye - chicken-and-egg problem).
 
 import { headers } from "next/headers";
 import { eq } from "drizzle-orm";
@@ -55,8 +55,8 @@ export interface SessionContext {
  * - User exists but tenant not created yet (shouldn't happen after signup)
  *
  * NOT for use in:
- * - Public chat routes (/c/[publicId]) — those resolve tenant by publicId
- * - Admin routes — those use separate role check
+ * - Public chat routes (/c/[publicId]) - those resolve tenant by publicId
+ * - Admin routes - those use separate role check
  */
 export async function getSessionContext(): Promise<SessionContext | null> {
   try {
@@ -78,7 +78,7 @@ export async function getSessionContext(): Promise<SessionContext | null> {
 
     const user = userRows[0];
     if (!user) {
-      // Session valid but user deleted — treat as no session
+      // Session valid but user deleted - treat as no session
       return null;
     }
 
@@ -120,7 +120,7 @@ export async function getSessionContext(): Promise<SessionContext | null> {
 
 /**
  * Get only the tenantId from session.
- * Use this for DAL calls — then pass tenantId to withTenant().
+ * Use this for DAL calls - then pass tenantId to withTenant().
  *
  * Throws if no tenant (caller must handle).
  */

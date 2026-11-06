@@ -5,13 +5,13 @@
 // Design:
 // - publicId = 22-char base64url random (unguessable, URL-safe).
 // - Status starts as 'pending_payment' (Phase 3 activates on payment).
-// - Uses admin connection (RLS bypass) — tenant must be created before RLS applies.
+// - Uses admin connection (RLS bypass) - tenant must be created before RLS applies.
 // - Atomic: if tenant creation fails, we surface error to caller (they roll back user).
 //
 // Ye kyun zaroori hai:
-// - publicId random hai — attacker tenant enumerate nahi kar sakta.
+// - publicId random hai - attacker tenant enumerate nahi kar sakta.
 // - 'pending_payment' status means paid features (chat) blocked until payment.
-// - Tenant creation failure must be visible — silent failure = broken workspace.
+// - Tenant creation failure must be visible - silent failure = broken workspace.
 
 import { randomBytes } from "node:crypto";
 import { eq } from "drizzle-orm";

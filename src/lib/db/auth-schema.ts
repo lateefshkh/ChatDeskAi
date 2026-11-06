@@ -84,7 +84,7 @@ export const accounts = pgTable(
     accessTokenExpiresAt: timestamp("access_token_expires_at", { withTimezone: true }),
     refreshTokenExpiresAt: timestamp("refresh_token_expires_at", { withTimezone: true }),
     scope: text("scope"),
-    password: text("password"), // hashed — Better Auth default (scrypt)
+    password: text("password"), // hashed - Better Auth default (scrypt)
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },

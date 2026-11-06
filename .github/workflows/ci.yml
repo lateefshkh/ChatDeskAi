@@ -3,7 +3,7 @@
 # Purpose: CI pipeline on every push/PR.
 #
 # Steps:
-# - Install deps (npm ci — lockfile respect)
+# - Install deps (npm ci - lockfile respect)
 # - Typecheck (tsc --noEmit)
 # - Lint (eslint)
 # - Tests (vitest run)

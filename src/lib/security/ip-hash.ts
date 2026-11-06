@@ -3,8 +3,8 @@
 // Purpose: Security primitives for hashing IPs and comparing secrets safely.
 //
 // Two core functions:
-//   1. hashIp(ip)       — HMAC-SHA256 with salt. Logs/audit ke liye pseudonymous ID.
-//   2. safeCompare(a,b) — Timing-safe string comparison. Webhook signatures, tokens.
+//   1. hashIp(ip)       - HMAC-SHA256 with salt. Logs/audit ke liye pseudonymous ID.
+//   2. safeCompare(a,b) - Timing-safe string comparison. Webhook signatures, tokens.
 //
 // Ye kyun zaroori hai:
 // - Plain SHA256(ip) brute-forceable hai (IPv4 = only 4 billion possibilities).
@@ -23,7 +23,7 @@ import { env } from "@/lib/env";
  *
  * Use for: audit logs, rate-limit keys, abuse detection.
  * Do NOT use for: anything that needs to recover the original IP.
- *   (Yeh one-way hai by design — privacy requirement.)
+ *   (Yeh one-way hai by design - privacy requirement.)
  */
 export function hashIp(ip: string): string {
   if (typeof ip !== "string" || ip.length === 0) {
@@ -44,7 +44,7 @@ export function hashIp(ip: string): string {
  * Use for:
  *   - Razorpay webhook signature verification (Phase 3)
  *   - Any secret/token comparison
- *   - Never use === for secrets — timing attack.
+ *   - Never use === for secrets - timing attack.
  */
 export function safeCompare(a: string, b: string): boolean {
   if (typeof a !== "string" || typeof b !== "string") {

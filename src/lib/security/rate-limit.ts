@@ -3,8 +3,8 @@
 // Purpose: Rate limiting for auth routes + chat (later).
 //
 // Design:
-// - Upstash Redis (REST) — serverless-safe, no TCP connections.
-// - Sliding window algorithm — smoother than fixed window.
+// - Upstash Redis (REST) - serverless-safe, no TCP connections.
+// - Sliding window algorithm - smoother than fixed window.
 // - Per-IP and per-account limits.
 // - Fail-open on Redis outage (availability > perfect security for rate limits;
 //   but log warning so ops can investigate).

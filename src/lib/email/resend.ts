@@ -4,14 +4,14 @@
 //
 // Design:
 // - Single Resend client instance (singleton).
-// - Templates inline (v1) — future mein alag templates folder.
-// - Timeout on send (5s) — hung email API shouldn't block signup.
+// - Templates inline (v1) - future mein alag templates folder.
+// - Timeout on send (5s) - hung email API shouldn't block signup.
 // - Errors logged but not thrown to user (email failure != signup failure).
 //
 // Ye kyun zaroori hai:
 // - Email verification ke bina account active nahi hota, isliye delivery reliable honi chahiye.
 // - Timeout ke bina Resend API hang ho jaye to signup request hang ho jayegi.
-// - Errors log karo lekin client ko generic success do — attacker ko email existence ka pata na chale.
+// - Errors log karo lekin client ko generic success do - attacker ko email existence ka pata na chale.
 
 import { Resend } from "resend";
 import { env } from "@/lib/env";
@@ -19,7 +19,7 @@ import { env } from "@/lib/env";
 // Resend client singleton
 const resend = new Resend(env.RESEND_API_KEY);
 
-// From address — free tier mein onboarding@resend.dev hi use karna padta hai
+// From address - free tier mein onboarding@resend.dev hi use karna padta hai
 // Production mein custom domain verify karke apna email use karein
 const FROM_EMAIL = "ChatDesk <onboarding@resend.dev>";
 
@@ -32,11 +32,11 @@ interface SendEmailOptions {
 
 /**
  * Core email sender. Timeout ke saath.
- * Returns success boolean — caller decide kare kya karna hai.
+ * Returns success boolean - caller decide kare kya karna hai.
  */
 async function sendEmail({ to, subject, html, text }: SendEmailOptions): Promise<boolean> {
   try {
-    // 5s timeout — hung API se bachne ke liye
+    // 5s timeout - hung API se bachne ke liye
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
 
@@ -66,8 +66,8 @@ async function sendEmail({ to, subject, html, text }: SendEmailOptions): Promise
 /**
  * Send email verification link.
  *
- * @param to — user's email
- * @param verifyUrl — full URL with token (e.g. https://app.com/api/auth/verify-email?token=...)
+ * @param to - user's email
+ * @param verifyUrl - full URL with token (e.g. https://app.com/api/auth/verify-email?token=...)
  */
 export async function sendVerificationEmail(to: string, verifyUrl: string): Promise<boolean> {
   return sendEmail({
@@ -96,8 +96,8 @@ export async function sendVerificationEmail(to: string, verifyUrl: string): Prom
 /**
  * Send password reset link.
  *
- * @param to — user's email
- * @param resetUrl — full URL with token
+ * @param to - user's email
+ * @param resetUrl - full URL with token
  */
 export async function sendPasswordResetEmail(to: string, resetUrl: string): Promise<boolean> {
   return sendEmail({

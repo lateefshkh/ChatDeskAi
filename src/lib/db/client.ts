@@ -8,7 +8,7 @@
 // - Migration scripts
 //
 // NOT used for:
-// - Tenant data reads/writes (use withTenant() instead — RLS enforced)
+// - Tenant data reads/writes (use withTenant() instead - RLS enforced)
 //
 // Ye kyun zaroori hai:
 // - Auth tables RLS ke under nahi hain, kyunki auth lookups tenant-independent hote hain.
@@ -20,7 +20,7 @@ import { env } from "@/lib/env";
 import * as schema from "./schema";
 import * as authSchema from "./auth-schema";
 
-// Admin pool — owner role, RLS bypass.
+// Admin pool - owner role, RLS bypass.
 // Production mein pool size tune karein.
 export const adminPool = new Pool({
   connectionString: env.DATABASE_ADMIN_URL,

@@ -7,7 +7,7 @@
 // - Every compound index starts with `tenantId` (RLS + query performance).
 // - `chunks.embedding` uses pgvector (384 dims = all-MiniLM-L6-v2).
 // - HNSW index on embedding for fast cosine similarity search.
-// - `webhook_events` is platform-level (no RLS) — only admin connection touches it.
+// - `webhook_events` is platform-level (no RLS) - only admin connection touches it.
 // - Timestamps: `createdAt` + `updatedAt` on every document.
 //
 // Cascade rules:

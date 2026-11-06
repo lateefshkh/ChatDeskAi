@@ -75,7 +75,7 @@ export function handleApiError(error: unknown): Response {
     );
   }
 
-  // Unknown error — log (PII scrubbed), generic response
+  // Unknown error - log (PII scrubbed), generic response
   console.error(
     "[API_ERROR]",
     error instanceof Error ? error.message : "Unknown error"

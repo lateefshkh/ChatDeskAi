@@ -31,7 +31,7 @@ ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 
 -- ─── 2. Policies: app_user sirf apna tenant dekhe/edits kare ─────────────
 -- Har table pe: USING = read filter, WITH CHECK = write filter.
--- current_setting('app.tenant_id', true) — true = missing ho to NULL return (deny).
+-- current_setting('app.tenant_id', true) - true = missing ho to NULL return (deny).
 
 CREATE POLICY tenant_isolation_tenants ON tenants
   FOR ALL TO app_user

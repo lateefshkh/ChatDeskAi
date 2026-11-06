@@ -4,8 +4,8 @@
 // Agar koi required var missing ya invalid hai, app START hi nahi hoga.
 //
 // Design:
-// - serverSchema: server-only vars (secrets, DB URLs) — client ko kabhi nahi jaate
-// - clientSchema: sirf NEXT_PUBLIC_* vars — browser ko jaate hain
+// - serverSchema: server-only vars (secrets, DB URLs) - client ko kabhi nahi jaate
+// - clientSchema: sirf NEXT_PUBLIC_* vars - browser ko jaate hain
 //
 // Ye kyun zaroori hai:
 // Bina fail-fast validation ke, agar DATABASE_URL ya FIELD_ENCRYPTION_KEY missing ho,
@@ -24,9 +24,9 @@ const emptyToUndefined = (val: unknown) =>
 const serverSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 
-  // Database — do connections (RLS ke liye zaroori)
+  // Database - do connections (RLS ke liye zaroori)
   // DATABASE_URL = app_user (RLS enforced)
-  // DATABASE_ADMIN_URL = owner (RLS bypass — migrations, seed, auth lookup)
+  // DATABASE_ADMIN_URL = owner (RLS bypass - migrations, seed, auth lookup)
   DATABASE_URL: z.string().url(),
   DATABASE_ADMIN_URL: z.string().url(),
 
@@ -57,7 +57,7 @@ const serverSchema = z.object({
   RESEND_API_KEY: z.string().min(1),
   TELEGRAM_BOT_TOKEN: z.string().min(1),
 
-  // Security — field-level encryption + IP hashing
+  // Security - field-level encryption + IP hashing
   FIELD_ENCRYPTION_KEY: z
     .string()
     .regex(/^[0-9a-fA-F]{64}$/, "FIELD_ENCRYPTION_KEY must be 64 hex chars (32 bytes)"),
@@ -67,7 +67,7 @@ const serverSchema = z.object({
   INNGEST_EVENT_KEY: z.string().min(1),
   INNGEST_SIGNING_KEY: z.string().min(1),
 
-  // Sentry (optional in dev) — empty string ko undefined banate hain
+  // Sentry (optional in dev) - empty string ko undefined banate hain
   SENTRY_DSN: z.preprocess(emptyToUndefined, z.string().url().optional()),
 });
 

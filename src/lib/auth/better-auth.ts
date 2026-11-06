@@ -1,101 +1,115 @@
-// src/lib/auth/better-auth.ts
-//
-// Purpose: Better Auth instance configuration.
-//
-// Features:
-// - Email/password authentication
-// - Email verification required (Resend)
-// - Password reset (single-use, 30 min expiry)
-// - Session management (httpOnly, Secure, SameSite=Lax, 7-day)
-// - Drizzle adapter (auth-schema.ts tables)
-//
-// Ye kyun zaroori hai:
-// - Session cookies httpOnly + Secure + SameSite = XSS + CSRF protection.
-// - Email verification = fake account prevention.
-// - Password reset single-use + expiry = token replay attacks rokta hai.
-// - Better Auth default scrypt hashing = strong password storage.
-
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { and, eq, like } from "drizzle-orm";
+import { waitUntil } from "@vercel/functions";
 import { db } from "@/lib/db/client";
-import { env } from "@/lib/env";
+import { verifications } from "@/lib/db/auth-schema";
+import { env, publicEnv } from "@/lib/env";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email/resend";
 
+const isProd = env.NODE_ENV === "production";
+
 export const auth = betterAuth({
-  // ─── Database ─────────────────────────────────────────────────────────
   database: drizzleAdapter(db, {
     provider: "pg",
-    usePlural: true, // tables: users, sessions, accounts, verifications
+    usePlural: true,
   }),
 
-  // ─── Base URL ─────────────────────────────────────────────────────────
   baseURL: env.BETTER_AUTH_URL,
   secret: env.BETTER_AUTH_SECRET,
 
-  // ─── Email & Password ─────────────────────────────────────────────────
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true, // signup ke baad email verify karna zaroori
+    requireEmailVerification: true,
     minPasswordLength: 10,
     maxPasswordLength: 128,
-    autoSignIn: false, // signup ke baad auto-login nahi, pehle verify
-    sendResetPassword: async ({ user, url }) => {
-      // Token URL mein hota hai (Better Auth generate karta hai)
-      // 30 min expiry config se aati hai
-      await sendPasswordResetEmail(user.email, url);
+    autoSignIn: false,
+
+    sendResetPassword: async ({ user, token }) => {
+      const resetUrl = `${publicEnv.NEXT_PUBLIC_APP_URL}/reset-password?token=${encodeURIComponent(token)}`;
+      const sent = await sendPasswordResetEmail(user.email, resetUrl);
+      console.log("[RESET] Email sent:", sent, "to:", user.email);
+    },
+
+    resetPasswordTokenExpiresIn: 60 * 30, // 30 minutes
+    revokeSessionsOnPasswordReset: true,
+
+    // Reset hone ke baad is user ke baaki pending reset tokens delete
+    onPasswordReset: async ({ user }) => {
+      await db
+        .delete(verifications)
+        .where(
+          and(
+            like(verifications.identifier, "reset-password:%"),
+            eq(verifications.value, user.id),
+          ),
+        );
     },
   },
 
-  // ─── Email Verification ───────────────────────────────────────────────
   emailVerification: {
-    sendVerificationEmail: async ({ user, url }) => {
-      // url = https://app.com/api/auth/verify-email?token=xxx&callbackURL=...
-      await sendVerificationEmail(user.email, url);
+    sendVerificationEmail: async ({ user, token }) => {
+      const verifyUrl = `${publicEnv.NEXT_PUBLIC_APP_URL}/verify-email?token=${encodeURIComponent(token)}`;
+      const sent = await sendVerificationEmail(user.email, verifyUrl);
+      console.log("[VERIFY] Email sent:", sent, "to:", user.email);
     },
-    sendOnSignUp: true, // signup pe automatic send
-    autoSignInAfterVerification: true, // verify ke baad auto-login
-    expiresIn: 60 * 60, // 1 hour (seconds)
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    expiresIn: 60 * 60,
   },
 
-  // ─── Sessions ─────────────────────────────────────────────────────────
+  rateLimit: {
+    enabled: true,
+    window: 60,
+    max: 100,
+    customRules: {
+      "/request-password-reset": { window: 300, max: 3 },
+      "/sign-in/email": { window: 60, max: 5 },
+      "/send-verification-email": { window: 300, max: 3 },
+    },
+  },
+
   session: {
-    expiresIn: 60 * 60 * 24 * 7, // 7 days
-    updateAge: 60 * 60 * 24, // refresh session every 24h of activity
+    expiresIn: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 24,
     cookieCache: {
       enabled: true,
-      maxAge: 60 * 5, // 5 min client-side cache, reduces DB hits
+      maxAge: 60 * 5,
     },
   },
 
-  // ─── Advanced ─────────────────────────────────────────────────────────
   advanced: {
     cookiePrefix: "chatdesk",
-    useSecureCookies: env.NODE_ENV === "production",
+    useSecureCookies: isProd,
     defaultCookieAttributes: {
       httpOnly: true,
-      secure: env.NODE_ENV === "production",
+      secure: isProd,
       sameSite: "lax",
       path: "/",
     },
-    // CSRF protection
-    csrfProtection: true,
+    backgroundTasks: {
+      handler: (promise) => {
+        const safe = promise.catch((err) =>
+          console.error("[background-task] FAILED:", err),
+        );
+        if (isProd) waitUntil(safe);
+        else void safe;
+      },
+    },
   },
 
-  // ─── User model ───────────────────────────────────────────────────────
   user: {
     additionalFields: {
       role: {
         type: "string",
         defaultValue: "owner",
-        input: false, // user can't set their own role
+        input: false,
       },
     },
   },
 
-  // ─── Trusted origins (CORS) ───────────────────────────────────────────
   trustedOrigins: [env.BETTER_AUTH_URL],
 });
 
-// Export types for downstream use
 export type Auth = typeof auth;
-export type Session = typeof auth.$Infer.Session;
+export type Session = Awaited<ReturnType<typeof auth.api.getSession>>;

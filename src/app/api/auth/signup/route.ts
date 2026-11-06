@@ -1,6 +1,6 @@
 // src/app/api/auth/signup/route.ts
 //
-// Purpose: Custom signup endpoint — creates user + tenant atomically.
+// Purpose: Custom signup endpoint - creates user + tenant atomically.
 //
 // Flow:
 // 1. Validate input (email, password, name).
@@ -48,7 +48,7 @@ export async function POST(request: Request): Promise<Response> {
 
     const parsed = signupSchema.safeParse(body);
     if (!parsed.success) {
-      // Do not reveal which field failed specifically — generic message
+      // Do not reveal which field failed specifically - generic message
       throw new ValidationError("Invalid input. Check your email, password, and name.");
     }
 
@@ -85,7 +85,7 @@ export async function POST(request: Request): Promise<Response> {
       });
     } catch (err) {
       // Better Auth throws for duplicate email or weak password
-      // We do NOT reveal which — generic message prevents enumeration
+      // We do NOT reveal which - generic message prevents enumeration
       const message = err instanceof Error ? err.message : "";
       if (message.includes("already") || message.includes("exists")) {
         // Possible enumeration: don't confirm existence
@@ -107,7 +107,7 @@ export async function POST(request: Request): Promise<Response> {
       throw new AppError("SIGNUP_FAILED", 500, "Signup failed. Please try again.");
     }
 
-    // 6. Create tenant (atomic — if fails, signup considered failed)
+    // 6. Create tenant (atomic - if fails, signup considered failed)
     try {
       await createTenantForOwner(signupResult.user.id, email);
     } catch (err) {

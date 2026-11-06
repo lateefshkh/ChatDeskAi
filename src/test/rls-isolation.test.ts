@@ -19,7 +19,7 @@ import { drizzle } from "drizzle-orm/neon-serverless";
 import { tenants, sources } from "@/lib/db/schema";
 import { env } from "@/lib/env";
 
-// Admin connection (bypasses RLS) — used ONLY for test setup/cleanup
+// Admin connection (bypasses RLS) - used ONLY for test setup/cleanup
 const adminPool = new Pool({ connectionString: env.DATABASE_ADMIN_URL });
 const adminDb = drizzle({ client: adminPool });
 
@@ -134,7 +134,7 @@ describe("RLS Tenant Isolation", () => {
 
   // ─── Test 5: Tenant A cannot UPDATE B's source ─────────────────────────
   it("Tenant A cannot update Tenant B's source", async () => {
-    // Attempt update — RLS makes B's row invisible, so UPDATE affects 0 rows
+    // Attempt update - RLS makes B's row invisible, so UPDATE affects 0 rows
     const result = await withTenant(tenantAId, async (tx) => {
       return await tx
         .update(sources)
