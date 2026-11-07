@@ -3,7 +3,6 @@
 // Purpose: Session → tenant resolution.
 
 import { headers } from "next/headers";
-import { connection } from "next/server"; // NAYA IMPORT
 import { eq } from "drizzle-orm";
 import { auth } from "@/lib/auth/better-auth";
 import { db } from "@/lib/db/client";
@@ -32,9 +31,6 @@ export interface SessionContext {
 }
 
 export async function getSessionContext(): Promise<SessionContext | null> {
-  // Force request-time execution (skip prerender)
-  await connection(); // YEH LINE ADD KAREIN
-
   try {
     // Better Auth reads cookie from headers and validates signature
     const session = await auth.api.getSession({

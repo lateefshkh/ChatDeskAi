@@ -1,21 +1,24 @@
 // src/app/verify-email/page.tsx
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 type Status = "verifying" | "success" | "error" | "missing-token";
 
-function VerifyEmailContent() {
+export default function VerifyEmailPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
-
   const [status, setStatus] = useState<Status>("verifying");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
+    let token: string | null = null;
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      token = params.get("token");
+    }
+
     if (!token) {
       setStatus("missing-token");
       return;
@@ -48,7 +51,7 @@ function VerifyEmailContent() {
         setErrorMessage("Network error. Please try again.");
         setStatus("error");
       });
-  }, [token, router]);
+  }, [router]);
 
   return (
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center px-4">
@@ -120,19 +123,5 @@ function VerifyEmailContent() {
         )}
       </div>
     </div>
-  );
-}
-
-export default function VerifyEmailPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
-          <div className="h-12 w-12 border-4 border-neutral-200 border-t-neutral-900 rounded-full animate-spin" />
-        </div>
-      }
-    >
-      <VerifyEmailContent />
-    </Suspense>
   );
 }

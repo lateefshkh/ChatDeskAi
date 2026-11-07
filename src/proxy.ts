@@ -1,6 +1,6 @@
 // src/proxy.ts
 //
-// Purpose: Security headers + CSP nonce on every response.
+// Purpose: Security headers + CSP on every response.
 //
 // NOTE: Next.js 16 renamed `middleware.ts` → `proxy.ts`.
 //
@@ -10,20 +10,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-function generateNonce(): string {
-  const array = new Uint8Array(16);
-  crypto.getRandomValues(array);
-  // Edge runtime compatible: use btoa instead of Buffer
-  // Convert Uint8Array to binary string
-  let binary = "";
-  for (let i = 0; i < array.length; i++) {
-    binary += String.fromCharCode(array[i]);
-  }
-  return btoa(binary);
-}
-
 export function proxy(request: NextRequest) {
-  const nonce = generateNonce();
   const isDev = process.env.NODE_ENV === "development";
 
   const response = NextResponse.next({
@@ -32,12 +19,10 @@ export function proxy(request: NextRequest) {
     },
   });
 
-  response.headers.set("x-nonce", nonce);
-
-  // CSP: nonce-based, with Razorpay domains allowed
+  // CSP: standard policy with Cloudflare Turnstile & Razorpay domains allowed
   const csp = [
     `default-src 'self'`,
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://checkout.razorpay.com https://*.razorpay.com${isDev ? " 'unsafe-eval'" : ""}`,
+    `script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://checkout.razorpay.com https://*.razorpay.com${isDev ? " 'unsafe-eval'" : ""}`,
     `style-src 'self' 'unsafe-inline' https://checkout.razorpay.com`,
     `img-src 'self' data: https: https://*.razorpay.com`,
     `font-src 'self'`,

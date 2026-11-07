@@ -1,18 +1,17 @@
 // src/app/(auth)/signup/page.tsx
 "use client";
 
-import { useState, useCallback, type FormEvent, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useCallback, useEffect, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TurnstileWidget } from "@/components/auth/turnstile-widget";
 
-function SignupForm() {
+export default function SignupPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const justDeleted = searchParams.get("deleted") === "1";
+  const [justDeleted, setJustDeleted] = useState(false);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -21,6 +20,13 @@ function SignupForm() {
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setJustDeleted(params.get("deleted") === "1");
+    }
+  }, []);
 
   const handleTurnstileVerify = useCallback((token: string) => {
     setTurnstileToken(token);
@@ -203,19 +209,5 @@ function SignupForm() {
         <Link href="/privacy" className="underline hover:text-neutral-600">Privacy Policy</Link>.
       </p>
     </div>
-  );
-}
-
-export default function SignupPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center py-8">
-          <div className="h-8 w-8 border-4 border-neutral-200 border-t-neutral-900 rounded-full animate-spin" />
-        </div>
-      }
-    >
-      <SignupForm />
-    </Suspense>
   );
 }

@@ -24,7 +24,8 @@ import Script from "next/script";
 
 // Direct access to NEXT_PUBLIC_ var - inlined at build time.
 // Safe in client components. No env.ts import needed.
-const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+const TURNSTILE_SITE_KEY =
+  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "1x00000000000000000000AA";
 
 interface TurnstileWidgetProps {
   onVerify: (token: string) => void;

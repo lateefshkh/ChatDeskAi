@@ -1,22 +1,28 @@
 // src/app/(auth)/reset-password/page.tsx
 "use client";
 
-import { Suspense, useState, type FormEvent } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useEffect, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-function ResetPasswordForm() {
-  const searchParams = useSearchParams();
+export default function ResetPasswordPage() {
   const router = useRouter();
-  const token = searchParams.get("token");
+  const [token, setToken] = useState<string | null>(null);
 
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setToken(params.get("token"));
+    }
+  }, []);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -112,19 +118,5 @@ function ResetPasswordForm() {
         </Link>
       </p>
     </div>
-  );
-}
-
-export default function ResetPasswordPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center py-8">
-          <div className="h-8 w-8 border-4 border-neutral-200 border-t-neutral-900 rounded-full animate-spin" />
-        </div>
-      }
-    >
-      <ResetPasswordForm />
-    </Suspense>
   );
 }

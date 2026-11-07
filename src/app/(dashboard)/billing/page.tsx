@@ -1,17 +1,22 @@
 // src/app/(dashboard)/billing/page.tsx
 "use client";
 
-import { Suspense, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
 import Script from "next/script";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PLANS } from "@/lib/plans";
 
-function BillingContent() {
+export default function BillingPage() {
   const [loading, setLoading] = useState<string | null>(null);
-  const searchParams = useSearchParams();
-  const paymentSuccess = searchParams.get("payment") === "success";
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setPaymentSuccess(params.get("payment") === "success");
+    }
+  }, []);
 
   async function handleUpgrade(planId: string) {
     setLoading(planId);
@@ -83,13 +88,5 @@ function BillingContent() {
         ))}
       </div>
     </div>
-  );
-}
-
-export default function BillingPage() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <BillingContent />
-    </Suspense>
   );
 }
