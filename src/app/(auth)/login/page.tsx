@@ -1,32 +1,40 @@
 // src/app/(auth)/login/page.tsx
 "use client";
 
-import { Suspense, useState, useEffect, type FormEvent } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-function LoginForm() {
+export default function LoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const justVerified = searchParams.get("verified") === "1";
-  const justReset = searchParams.get("reset") === "1";
-  const justLoggedOut = searchParams.get("loggedout") === "1";
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  
+  // Banners state (URL params ki jagah)
+  const [justVerified, setJustVerified] = useState(false);
+  const [justReset, setJustReset] = useState(false);
+  const [justLoggedOut, setJustLoggedOut] = useState(false);
 
-  // BFCache FIX: Jab user back/forward button dabaye ya logout karke aaye,
-  // to form ko clear kar do aur loading state reset kar do.
   useEffect(() => {
+    // Form clear karein
     setEmail("");
     setPassword("");
     setLoading(false);
     setError(null);
+
+    // URL params check karein (bina useSearchParams ke)
+    // Yeh Vercel par Suspense hang nahi karega
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setJustVerified(params.get("verified") === "1");
+      setJustReset(params.get("reset") === "1");
+      setJustLoggedOut(params.get("loggedout") === "1");
+    }
   }, []);
 
   async function onSubmit(e: FormEvent) {
@@ -60,7 +68,6 @@ function LoginForm() {
         return;
       }
 
-      // Success — dashboard pe redirect
       router.push("/dashboard");
       router.refresh();
     } catch {
@@ -80,7 +87,7 @@ function LoginForm() {
         </p>
       </div>
 
-      {/* Messages */}
+      {/* Messages (state se) */}
       {justVerified && (
         <div className="mb-6 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
           <p className="text-sm text-emerald-700">
@@ -103,7 +110,6 @@ function LoginForm() {
         </div>
       )}
 
-      {/* autoComplete="off" add kiya taake browser inputs autofill na kare */}
       <form onSubmit={onSubmit} className="space-y-4" noValidate autoComplete="off">
         <div className="space-y-1.5">
           <Label htmlFor="email">Email</Label>
@@ -161,19 +167,5 @@ function LoginForm() {
         </Link>
       </p>
     </div>
-  );
-}
-
-export default function LoginPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center py-8">
-          <div className="h-8 w-8 border-4 border-neutral-200 border-t-neutral-900 rounded-full animate-spin" />
-        </div>
-      }
-    >
-      <LoginForm />
-    </Suspense>
   );
 }
