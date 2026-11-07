@@ -83,6 +83,22 @@ export async function getSessionContext(): Promise<SessionContext | null> {
       tenant,
     };
   } catch (error) {
+    // If Next.js is signaling dynamic server usage or redirect/not-found, rethrow!
+    if (
+      error &&
+      typeof error === "object" &&
+      "digest" in error &&
+      typeof (error as { digest?: unknown }).digest === "string"
+    ) {
+      const digest = (error as { digest: string }).digest;
+      if (digest.startsWith("DYNAMIC_SERVER_USAGE") || digest.startsWith("NEXT_")) {
+        throw error;
+      }
+    }
+    if (error instanceof Error && error.message.includes("Dynamic server usage")) {
+      throw error;
+    }
+
     const message = error instanceof Error ? error.message : "unknown";
     console.error("[session] resolve failed:", message);
     return null;
