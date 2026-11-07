@@ -1,9 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  // cacheComponents: true,  // ← TEMPORARILY DISABLED (Vercel infinite loading bug)
+  // partialPrefetching: true, // ← Isko bhi hata dein agar cacheComponents ke saath tha
   turbopack: {
     rules: {
       "*.css": {

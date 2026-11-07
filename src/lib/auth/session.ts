@@ -1,20 +1,9 @@
 // src/lib/auth/session.ts
 //
 // Purpose: Session → tenant resolution.
-//
-// Flow:
-// 1. Request headers se Better Auth session validate karo.
-// 2. Session se userId nikalo.
-// 3. userId se tenant lookup (admin connection, RLS bypass).
-// 4. Return { session, user, tenant } or null.
-//
-// Ye kyun zaroori hai:
-// - Tenant session se derive hota hai, kabhi client input se nahi.
-// - Agar attacker session cookie forge kare to Better Auth signature check fail karega.
-// - Tenant lookup admin connection se hota hai kyunki user ka tenant resolve karna hai
-//   (RLS ke liye pehle tenantId chahiye - chicken-and-egg problem).
 
 import { headers } from "next/headers";
+import { connection } from "next/server"; // NAYA IMPORT
 import { eq } from "drizzle-orm";
 import { auth } from "@/lib/auth/better-auth";
 import { db } from "@/lib/db/client";
@@ -42,23 +31,10 @@ export interface SessionContext {
   } | null;
 }
 
-/**
- * Resolve session → user → tenant.
- *
- * Returns null if:
- * - No session cookie
- * - Session expired
- * - Session invalid (signature mismatch)
- * - User not found (deleted)
- *
- * Returns tenant: null if:
- * - User exists but tenant not created yet (shouldn't happen after signup)
- *
- * NOT for use in:
- * - Public chat routes (/c/[publicId]) - those resolve tenant by publicId
- * - Admin routes - those use separate role check
- */
 export async function getSessionContext(): Promise<SessionContext | null> {
+  // Force request-time execution (skip prerender)
+  await connection(); // YEH LINE ADD KAREIN
+
   try {
     // Better Auth reads cookie from headers and validates signature
     const session = await auth.api.getSession({
@@ -78,7 +54,6 @@ export async function getSessionContext(): Promise<SessionContext | null> {
 
     const user = userRows[0];
     if (!user) {
-      // Session valid but user deleted - treat as no session
       return null;
     }
 
@@ -118,12 +93,6 @@ export async function getSessionContext(): Promise<SessionContext | null> {
   }
 }
 
-/**
- * Get only the tenantId from session.
- * Use this for DAL calls - then pass tenantId to withTenant().
- *
- * Throws if no tenant (caller must handle).
- */
 export async function requireTenantIdFromSession(): Promise<string> {
   const ctx = await getSessionContext();
   if (!ctx) {
