@@ -62,7 +62,7 @@ export default function VerifyEmailPage() {
           <div className="w-8 h-8 rounded-full bg-[#0D4B37] flex items-center justify-center text-white shadow-sm">
             <Bot className="w-4 h-4" />
           </div>
-          <span className="text-base font-bold text-[#18181B] tracking-tight">ChatDesk AI</span>
+          <span className="text-base font-bold text-[#18181B] tracking-tight">ChatDesk AI Automation</span>
         </Link>
 
         {status === "verifying" && (

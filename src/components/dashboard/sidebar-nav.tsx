@@ -103,7 +103,7 @@ function SidebarContent({
       {/* Logo */}
       <div className="px-5 pt-5 pb-4 border-b border-border">
         <span className="text-[15px] font-semibold text-foreground tracking-tight">
-          ChatDesk
+          ChatDesk AI Automation
         </span>
       </div>
 
@@ -161,7 +161,7 @@ export function SidebarNav({ email, publicChatUrl }: SidebarNavProps) {
 
       {/* ── Mobile top bar ── */}
       <header className="lg:hidden fixed top-0 inset-x-0 z-30 flex items-center justify-between bg-card border-b border-border px-4 h-14">
-        <span className="text-[15px] font-semibold text-foreground">ChatDesk</span>
+        <span className="text-[15px] font-semibold text-foreground">ChatDesk AI Automation</span>
         <button
           onClick={() => setMobileOpen(true)}
           className="p-1.5 rounded-lg hover:bg-secondary transition-colors text-muted-foreground"
@@ -180,7 +180,7 @@ export function SidebarNav({ email, publicChatUrl }: SidebarNavProps) {
           />
           <div className="fixed inset-y-0 left-0 z-50 w-64 bg-card shadow-xl flex flex-col">
             <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-              <span className="text-[15px] font-semibold text-foreground">ChatDesk</span>
+              <span className="text-[15px] font-semibold text-foreground">ChatDesk AI Automation</span>
               <button
                 onClick={() => setMobileOpen(false)}
                 className="p-1.5 rounded-lg hover:bg-secondary transition-colors text-muted-foreground"

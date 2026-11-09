@@ -35,7 +35,7 @@ export function TopNav({ email, isAdmin }: TopNavProps) {
               <Bot className="w-4 h-4" />
             </div>
             <span className="text-base font-bold tracking-tight text-[#18181B]">
-              ChatDesk <span className="text-[#0D4B37] font-semibold">AI</span>
+              ChatDesk <span className="text-[#0D4B37] font-semibold">AI Automation</span>
             </span>
           </Link>
 

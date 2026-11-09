@@ -32,7 +32,7 @@ export default function HomePage() {
               <Bot className="w-4 h-4" />
             </div>
             <span className="text-base font-bold tracking-tight text-[#18181B]">
-              ChatDesk <span className="text-[#0D4B37] font-semibold">AI</span>
+              ChatDesk <span className="text-[#0D4B37] font-semibold">AI Automation</span>
             </span>
           </Link>
 
@@ -559,7 +559,7 @@ export default function HomePage() {
             <div className="w-5 h-5 rounded-full bg-[#0D4B37] text-white flex items-center justify-center text-[10px] font-bold">
               C
             </div>
-            <span>© 2026 ChatDesk AI. All rights reserved.</span>
+            <span>© 2026 ChatDesk AI Automation. All rights reserved.</span>
           </div>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="hover:text-[#18181B] transition-colors">

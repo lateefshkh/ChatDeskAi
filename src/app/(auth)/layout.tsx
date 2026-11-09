@@ -19,7 +19,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
               <Bot className="w-5 h-5" />
             </div>
             <span className="text-lg font-bold tracking-tight text-[#18181B]">
-              ChatDesk <span className="text-[#0D4B37] font-semibold">AI</span>
+              ChatDesk <span className="text-[#0D4B37] font-semibold">AI Automation</span>
             </span>
           </Link>
 
@@ -119,7 +119,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           <span className="flex items-center gap-1.5">
             <Check className="w-4 h-4 text-[#0D4B37]" /> Verified Sources Only
           </span>
-          <span>© 2026 ChatDesk AI</span>
+          <span>© 2026 ChatDesk AI Automation</span>
         </div>
       </div>
 
@@ -131,7 +131,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             <div className="w-8 h-8 rounded-full bg-[#0D4B37] flex items-center justify-center text-white shadow-sm">
               <Bot className="w-4 h-4" />
             </div>
-            <span className="text-base font-bold text-[#18181B] tracking-tight">ChatDesk AI</span>
+            <span className="text-base font-bold text-[#18181B] tracking-tight">ChatDesk AI Automation</span>
           </Link>
         </div>
 

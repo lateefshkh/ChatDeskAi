@@ -6,8 +6,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "ChatDesk",
-  description: "AI assistant grounded in your business knowledge.",
+  title: "ChatDesk AI Automation",
+  description: "Website AI assistant and lead automation grounded in your business knowledge.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
