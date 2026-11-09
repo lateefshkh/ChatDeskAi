@@ -20,7 +20,7 @@ export async function generateAnswer(prompt: string): Promise<GenerateResponse> 
         model: "openai/gpt-oss-20b",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.3,
-        max_tokens: 500,
+        max_tokens: 1500,
       }),
     });
 

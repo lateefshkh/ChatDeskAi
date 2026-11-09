@@ -1,8 +1,14 @@
+// next.config.ts
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // cacheComponents: true,  // ← TEMPORARILY DISABLED (Vercel infinite loading bug)
-  // partialPrefetching: true, // ← Isko bhi hata dein agar cacheComponents ke saath tha
+  // ✅ Playwright Chromium binary ko include karein
+  outputFileTracingIncludes: {
+    "/api/sources": ["./node_modules/@sparticuz/chromium/bin/**/*"],
+  },
+  
+  serverExternalPackages: ["@sparticuz/chromium"],
+  
   turbopack: {
     rules: {
       "*.css": {

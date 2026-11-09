@@ -1,19 +1,22 @@
 // src/app/api/sources/route.ts
 import { z } from "zod";
 import { requireAuth } from "@/lib/auth/require-auth";
-import { createSource } from "@/lib/dal/sources";
+import { createSource, updateSourceStatus } from "@/lib/dal/sources";
 import { createChunk } from "@/lib/dal/chunks";
-import { fetchAndExtractText } from "@/lib/ingestion/fetcher";
+import { scrapeFullWebsite } from "@/lib/ingestion/playwright-scraper";
 import { chunkText } from "@/lib/ingestion/chunker";
 import { generateEmbedding } from "@/lib/ingestion/embedder";
 import { handleApiError, ValidationError } from "@/lib/errors";
-import { updateSourceStatus } from "@/lib/dal/sources";
 import { createHash } from "node:crypto";
+
+// ✅ Vercel timeout badhaya (Hobby plan max 60s)
+export const maxDuration = 60;
 
 const bodySchema = z.object({
   type: z.enum(["url", "text"]),
   label: z.string().min(1).max(100),
   content: z.string().min(1).max(50000),
+  mode: z.enum(["vercel", "local"]).default("vercel"), // <-- NAYA
 }).strict();
 
 export async function POST(request: Request) {
@@ -24,51 +27,63 @@ export async function POST(request: Request) {
     const parsed = bodySchema.safeParse(body);
     if (!parsed.success) throw new ValidationError("Invalid input");
 
-    const { type, label, content } = parsed.data;
+    const { type, label, content, mode } = parsed.data;
 
-    // 1. Create source (queued)
     const source = await createSource({
       tenantId: ctx.tenant.id,
       type,
       label,
     });
 
-    // Note: Yeh processing background mein hona chahiye (Inngest), 
-    // lekin abhi ke liye hum sync kar rahe hain taake test kar sakein.
-    // (Warning: Long requests timeout ho sakti hain, Phase 8 mein fix karenge)
-
     try {
-      // 2. Update to processing
-      await updateSourceStatus({ tenantId: ctx.tenant.id, sourceId: source.id, status: "processing" });
+      await updateSourceStatus({
+        tenantId: ctx.tenant.id,
+        sourceId: source.id,
+        status: "processing",
+      });
 
-      // 3. Extract text
-      let rawText = content;
+      let pages: { url: string; text: string }[] = [];
+
       if (type === "url") {
-        rawText = await fetchAndExtractText(content);
+        // ✅ Mode ke hisaab se maxPages decide karein
+        const maxPages = mode === "local" ? 50 : 5;
+        console.log(`[ingestion] Mode: ${mode}, Max pages: ${maxPages}`);
+        
+        pages = await scrapeFullWebsite(content, maxPages);
+        if (pages.length === 0) {
+          throw new Error("No content could be extracted from the website");
+        }
+      } else {
+        pages = [{ url: "text-input", text: content }];
       }
 
-      // 4. Chunk
-      const chunks = chunkText(rawText);
-
-      // 5. Save chunks with embeddings
-      for (const chunk of chunks) {
-        const embedding = await generateEmbedding(chunk.text);
-        await createChunk({
-          tenantId: ctx.tenant.id,
-          sourceId: source.id,
-          text: chunk.text,
-          embedding,
-          embeddingModel: "placeholder",
-          embeddingVersion: "v1",
-          tokenCount: Math.ceil(chunk.text.length / 4), // rough estimate
-          position: chunk.position,
-          contentHash: createHash("sha256").update(chunk.text).digest("hex"),
-        });
+      let totalChunks = 0;
+      for (const page of pages) {
+        const chunks = chunkText(page.text);
+        for (const chunk of chunks) {
+          const embedding = await generateEmbedding(chunk.text);
+          await createChunk({
+            tenantId: ctx.tenant.id,
+            sourceId: source.id,
+            text: chunk.text,
+            embedding,
+            embeddingModel: "Xenova/all-MiniLM-L6-v2",
+            embeddingVersion: "v1",
+            tokenCount: Math.ceil(chunk.text.length / 4),
+            position: chunk.position,
+            contentHash: createHash("sha256").update(chunk.text).digest("hex"),
+          });
+          totalChunks++;
+        }
       }
 
-      // 6. Mark ready
-      await updateSourceStatus({ tenantId: ctx.tenant.id, sourceId: source.id, status: "ready" });
+      await updateSourceStatus({
+        tenantId: ctx.tenant.id,
+        sourceId: source.id,
+        status: "ready",
+      });
 
+      console.log(`[ingestion] Scraped ${pages.length} pages, created ${totalChunks} chunks`);
     } catch (err: any) {
       console.error("[ingestion] Failed:", err);
       await updateSourceStatus({

@@ -20,11 +20,11 @@ export default function VerifyEmailPage() {
     }
 
     if (!token) {
+      // Token nahi hai (jo normal user ke liye hoga)
       setStatus("missing-token");
       return;
     }
 
-    // Better Auth v1.7: GET endpoint with query params
     fetch(`/api/auth/verify-email?token=${encodeURIComponent(token)}`, {
       method: "GET",
       credentials: "include",
@@ -32,8 +32,6 @@ export default function VerifyEmailPage() {
       .then(async (res) => {
         if (res.ok) {
           setStatus("success");
-          // FIX: 1.5 seconds baad direct login page pe redirect
-          // User ko success dikhne ka time milega, phir auto-redirect
           setTimeout(() => {
             router.push("/login?verified=1");
             router.refresh();
@@ -87,7 +85,6 @@ export default function VerifyEmailPage() {
             <p className="text-sm text-neutral-500">
               Redirecting to login page...
             </p>
-            {/* Button hata diya hai — auto redirect hoga */}
           </>
         )}
 
@@ -112,9 +109,18 @@ export default function VerifyEmailPage() {
 
         {status === "missing-token" && (
           <>
-            <h1 className="text-xl font-semibold text-neutral-900 mb-2">Invalid link</h1>
+            <div className="mb-4 flex justify-center">
+              <div className="h-12 w-12 bg-amber-100 rounded-full flex items-center justify-center">
+                <svg className="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+            </div>
+            <h1 className="text-xl font-semibold text-neutral-900 mb-2">
+              Awaiting Verification
+            </h1>
             <p className="text-sm text-neutral-500 mb-4">
-              This link is missing a verification token. Please check your email and click the correct link.
+              Your request has been sent to Headquarter. Once verified, you will be able to log in.
             </p>
             <Link href="/login" className="text-sm text-neutral-900 font-medium hover:underline">
               Back to login

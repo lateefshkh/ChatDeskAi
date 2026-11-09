@@ -3,18 +3,21 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 type SourceType = "url" | "text";
+type ScrapingMode = "vercel" | "local";
 
 export default function NewSourcePage() {
   const router = useRouter();
   const [type, setType] = useState<SourceType>("url");
+  const [mode, setMode] = useState<ScrapingMode>("vercel"); // <-- NAYA
   const [label, setLabel] = useState("");
-  const [content, setContent] = useState(""); // URL ya Text
+  const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -27,14 +30,13 @@ export default function NewSourcePage() {
       const res = await fetch("/api/sources", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type, label, content }),
+        body: JSON.stringify({ type, label, content, mode }), // <-- mode bhejein
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to create source");
 
-      // Success — dashboard pe wapas jayein
-      router.push("/dashboard");
+      router.push("/sources");
       router.refresh();
     } catch (err: any) {
       setError(err.message);
@@ -45,8 +47,10 @@ export default function NewSourcePage() {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-neutral-900 mb-1">Add knowledge source</h1>
-        <p className="text-sm text-neutral-500">Train your AI assistant with website links or text.</p>
+        <h1 className="text-2xl font-semibold text-foreground mb-1">Add knowledge source</h1>
+        <p className="text-sm text-muted-foreground">
+          Train your AI assistant with website links or text.
+        </p>
       </div>
 
       <Card>
@@ -59,8 +63,8 @@ export default function NewSourcePage() {
                 onClick={() => setType("url")}
                 className={`flex-1 py-3 px-4 border rounded-lg text-sm font-medium transition-colors ${
                   type === "url"
-                    ? "border-neutral-900 bg-neutral-900 text-white"
-                    : "border-neutral-200 text-neutral-700 hover:border-neutral-300"
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border text-foreground hover:border-primary/50"
                 }`}
               >
                 Website URL
@@ -70,13 +74,49 @@ export default function NewSourcePage() {
                 onClick={() => setType("text")}
                 className={`flex-1 py-3 px-4 border rounded-lg text-sm font-medium transition-colors ${
                   type === "text"
-                    ? "border-neutral-900 bg-neutral-900 text-white"
-                    : "border-neutral-200 text-neutral-700 hover:border-neutral-300"
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border text-foreground hover:border-primary/50"
                 }`}
               >
                 Paste Text
               </button>
             </div>
+
+            {/* Mode Selection (Only for URL) */}
+            {type === "url" && (
+              <div>
+                <Label className="mb-2 block">Scraping Mode</Label>
+                <div className="flex gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setMode("vercel")}
+                    className={`flex-1 py-3 px-4 border rounded-lg text-sm font-medium transition-colors ${
+                      mode === "vercel"
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border text-muted-foreground hover:border-primary/50"
+                    }`}
+                  >
+                    Vercel (Fast, 5 pages)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMode("local")}
+                    className={`flex-1 py-3 px-4 border rounded-lg text-sm font-medium transition-colors ${
+                      mode === "local"
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border text-muted-foreground hover:border-primary/50"
+                    }`}
+                  >
+                    Local (Deep, 50 pages)
+                  </button>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  {mode === "vercel"
+                    ? "Best for deployed app. Scrapes up to 5 pages (fits Vercel 10s limit)."
+                    : "Best for local testing. Scrapes up to 50 pages (may take 1-2 minutes)."}
+                </p>
+              </div>
+            )}
 
             {/* Label */}
             <div className="space-y-1.5">
@@ -112,7 +152,7 @@ export default function NewSourcePage() {
                   placeholder="Paste your text here..."
                   required
                   rows={8}
-                  className="w-full px-3 py-2 border border-neutral-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900"
+                  className="w-full px-3.5 py-2.5 bg-background border border-border rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all"
                 />
               )}
             </div>
@@ -124,11 +164,16 @@ export default function NewSourcePage() {
             )}
 
             <div className="flex gap-3">
-              <Button type="button" variant="outline" onClick={() => router.back()} disabled={loading}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.back()}
+                disabled={loading}
+              >
                 Cancel
               </Button>
               <Button type="submit" disabled={loading} className="flex-1">
-                {loading ? "Adding..." : "Add source"}
+                {loading ? "Processing..." : "Add source"}
               </Button>
             </div>
           </form>

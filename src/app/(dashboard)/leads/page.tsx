@@ -4,6 +4,7 @@ import { requireAuth } from "@/lib/auth/require-auth";
 import { listLeads } from "@/lib/dal/leads";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { decryptField } from "@/lib/security/crypto";
+import { SkeletonTable, SkeletonPageHeader } from "@/components/dashboard/skeleton";
 
 async function LeadsContent() {
   const ctx = await requireAuth();
@@ -11,7 +12,7 @@ async function LeadsContent() {
 
   return (
     <div>
-      <div className="mb-8">
+      <div className="mb-6">
         <h1 className="text-2xl font-semibold text-neutral-900 mb-1">Leads</h1>
         <p className="text-sm text-neutral-500">
           Visitors who shared their contact details.
@@ -87,7 +88,14 @@ async function LeadsContent() {
 
 export default function LeadsPage() {
   return (
-    <Suspense fallback={<div className="text-center py-8 text-neutral-400">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="space-y-6">
+          <SkeletonPageHeader />
+          <SkeletonTable rows={5} />
+        </div>
+      }
+    >
       <LeadsContent />
     </Suspense>
   );

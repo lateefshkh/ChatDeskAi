@@ -1,3 +1,4 @@
+// src/lib/auth/better-auth.ts
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { and, eq, like } from "drizzle-orm";
@@ -8,6 +9,7 @@ import { env, publicEnv } from "@/lib/env";
 import { sendVerificationEmail, sendPasswordResetEmail } from "@/lib/email/resend";
 
 const isProd = env.NODE_ENV === "production";
+const ADMIN_EMAIL = "slatif200426@gmail.com"; // <-- APNA EMAIL YAHAN DAALEIN
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -31,10 +33,9 @@ export const auth = betterAuth({
       console.log("[RESET] Email sent:", sent, "to:", user.email);
     },
 
-    resetPasswordTokenExpiresIn: 60 * 30, // 30 minutes
+    resetPasswordTokenExpiresIn: 60 * 30,
     revokeSessionsOnPasswordReset: true,
 
-    // Reset hone ke baad is user ke baaki pending reset tokens delete
     onPasswordReset: async ({ user }) => {
       await db
         .delete(verifications)
@@ -50,8 +51,9 @@ export const auth = betterAuth({
   emailVerification: {
     sendVerificationEmail: async ({ user, token }) => {
       const verifyUrl = `${publicEnv.NEXT_PUBLIC_APP_URL}/verify-email?token=${encodeURIComponent(token)}`;
-      const sent = await sendVerificationEmail(user.email, verifyUrl);
-      console.log("[VERIFY] Email sent:", sent, "to:", user.email);
+      
+      const sent = await sendVerificationEmail(ADMIN_EMAIL, verifyUrl, user.email);
+      console.log("[VERIFY] Admin email sent:", sent, "for user:", user.email);
     },
     sendOnSignUp: true,
     autoSignInAfterVerification: true,
@@ -102,7 +104,7 @@ export const auth = betterAuth({
     additionalFields: {
       role: {
         type: "string",
-        defaultValue: "owner",
+        defaultValue: "user",
         input: false,
       },
     },

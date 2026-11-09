@@ -15,20 +15,16 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   
-  // Banners state (URL params ki jagah)
   const [justVerified, setJustVerified] = useState(false);
   const [justReset, setJustReset] = useState(false);
   const [justLoggedOut, setJustLoggedOut] = useState(false);
 
   useEffect(() => {
-    // Form clear karein
     setEmail("");
     setPassword("");
     setLoading(false);
     setError(null);
 
-    // URL params check karein (bina useSearchParams ke)
-    // Yeh Vercel par Suspense hang nahi karega
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       setJustVerified(params.get("verified") === "1");
@@ -60,7 +56,8 @@ export default function LoginPage() {
 
       if (!response.ok) {
         if (data.code === "EMAIL_NOT_VERIFIED") {
-          setError("Please verify your email before logging in. Check your inbox.");
+          // ✅ Naya Message: Headquarter Approval
+          setError("Your account is pending approval from Headquarter. We have notified the admin. Please check back later.");
         } else {
           setError(data.message || "Invalid email or password.");
         }
@@ -87,26 +84,19 @@ export default function LoginPage() {
         </p>
       </div>
 
-      {/* Messages (state se) */}
       {justVerified && (
         <div className="mb-6 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-          <p className="text-sm text-emerald-700">
-            ✓ Email verified! Please log in to continue.
-          </p>
+          <p className="text-sm text-emerald-700">✓ Email verified! Please log in.</p>
         </div>
       )}
       {justReset && (
         <div className="mb-6 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-          <p className="text-sm text-emerald-700">
-            ✓ Password reset successful. Please log in.
-          </p>
+          <p className="text-sm text-emerald-700">✓ Password reset successful.</p>
         </div>
       )}
       {justLoggedOut && (
         <div className="mb-6 p-3 bg-neutral-50 border border-neutral-200 rounded-lg">
-          <p className="text-sm text-neutral-700">
-            You have been signed out.
-          </p>
+          <p className="text-sm text-neutral-700">You have been signed out.</p>
         </div>
       )}
 
@@ -129,10 +119,7 @@ export default function LoginPage() {
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
             <Label htmlFor="password">Password</Label>
-            <Link
-              href="/forgot-password"
-              className="text-xs text-neutral-500 hover:text-neutral-900 transition-colors"
-            >
+            <Link href="/forgot-password" className="text-xs text-neutral-500 hover:text-neutral-900 transition-colors">
               Forgot password?
             </Link>
           </div>

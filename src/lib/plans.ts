@@ -14,19 +14,26 @@ export interface Plan {
 }
 
 export const PLANS: Record<string, Plan> = {
+  "free-trial": {
+    id: "free-trial",
+    name: "Free Trial",
+    type: "one_time",
+    pricePaise: 0,
+    chatLimit: 10, // <-- 10 free chats
+  },
   "starter-once": {
     id: "starter-once",
-    name: "Starter Pack (5 Chats)",
+    name: "Starter Pack (30 Chats)",
     type: "one_time",
-    pricePaise: 4900, // ₹49 (49 * 100 paise)
-    chatLimit: 10,     // 10 chats limit
+    pricePaise: 4900, // ₹49
+    chatLimit: 30,    // <-- 30 chats (updated)
   },
   "growth-monthly": {
     id: "growth-monthly",
     name: "Growth Monthly",
     type: "subscription",
-    pricePaise: 39900, // ₹399 (399 * 100 paise)
-    chatLimit: 3000,   // 3000 chats per month
+    pricePaise: 39900, // ₹399
+    chatLimit: 3000,   // 3000 monthly chats
   },
 };
 

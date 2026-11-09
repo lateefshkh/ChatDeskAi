@@ -3,6 +3,7 @@
 // Purpose: Session → tenant resolution.
 
 import { headers } from "next/headers";
+import { connection } from "next/server"; // <-- YEH ADD KAREIN
 import { eq } from "drizzle-orm";
 import { auth } from "@/lib/auth/better-auth";
 import { db } from "@/lib/db/client";
@@ -31,6 +32,9 @@ export interface SessionContext {
 }
 
 export async function getSessionContext(): Promise<SessionContext | null> {
+  // ✅ YEH ADD KAREIN — Next.js ko signal deta hai ke yeh request-time code hai
+  await connection();
+
   try {
     // Better Auth reads cookie from headers and validates signature
     const session = await auth.api.getSession({

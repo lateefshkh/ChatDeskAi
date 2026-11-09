@@ -74,24 +74,15 @@ function IconClose() {
   );
 }
 
-function IconExternalLink() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-      <polyline points="15 3 21 3 21 9" />
-      <line x1="10" y1="14" x2="21" y2="3" />
-    </svg>
-  );
-}
-
 // ─── Nav items ────────────────────────────────────────────────────────────
 
 const navItems = [
-  { label: "Overview",   href: "/dashboard", icon: IconHome },
-  { label: "Sources",    href: "/sources",   icon: IconDatabase },
-  { label: "Chats",      href: "/chats",     icon: IconMessages },
-  { label: "Leads",      href: "/leads",     icon: IconUsers },
-  { label: "Billing",    href: "/billing",   icon: IconBilling },
+  { label: "Overview",      href: "/dashboard", icon: IconHome },
+  { label: "Chat Preview",  href: "/chat",      icon: IconMessages },
+  { label: "Sources",       href: "/sources",   icon: IconDatabase },
+  { label: "Chats",         href: "/chats",     icon: IconMessages },
+  { label: "Leads",         href: "/leads",     icon: IconUsers },
+  { label: "Pricing",       href: "/pricing",   icon: IconBilling },
 ];
 
 // ─── Sidebar content (shared between desktop & mobile) ────────────────────
@@ -110,8 +101,8 @@ function SidebarContent({
   return (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className="px-5 pt-5 pb-4 border-b border-neutral-100">
-        <span className="text-[15px] font-semibold text-neutral-900 tracking-tight">
+      <div className="px-5 pt-5 pb-4 border-b border-border">
+        <span className="text-[15px] font-semibold text-foreground tracking-tight">
           ChatDesk
         </span>
       </div>
@@ -131,8 +122,8 @@ function SidebarContent({
               className={`
                 flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors
                 ${active
-                  ? "bg-neutral-100 text-neutral-900 font-medium"
-                  : "text-neutral-500 hover:text-neutral-900 hover:bg-neutral-50"
+                  ? "bg-secondary text-foreground font-medium"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                 }
               `}
             >
@@ -143,21 +134,8 @@ function SidebarContent({
         })}
       </nav>
 
-      {/* Open chat link */}
-      <div className="px-3 pb-3">
-        <a
-          href={publicChatUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-neutral-400 hover:text-neutral-600 hover:bg-neutral-50 transition-colors"
-        >
-          <IconExternalLink />
-          <span className="truncate">Open public chat</span>
-        </a>
-      </div>
-
       {/* Account */}
-      <div className="px-4 py-3 border-t border-neutral-100">
+      <div className="px-4 py-3 border-t border-border">
         <AccountMenu email={email} />
       </div>
     </div>
@@ -177,16 +155,16 @@ export function SidebarNav({ email, publicChatUrl }: SidebarNavProps) {
   return (
     <>
       {/* ── Desktop sidebar ── */}
-      <aside className="hidden lg:flex flex-col w-56 shrink-0 border-r border-neutral-200 bg-white min-h-screen sticky top-0 h-screen">
+      <aside className="hidden lg:flex flex-col w-56 shrink-0 border-r border-border bg-card min-h-screen sticky top-0 h-screen">
         <SidebarContent email={email} publicChatUrl={publicChatUrl} />
       </aside>
 
       {/* ── Mobile top bar ── */}
-      <header className="lg:hidden fixed top-0 inset-x-0 z-30 flex items-center justify-between bg-white border-b border-neutral-200 px-4 h-14">
-        <span className="text-[15px] font-semibold text-neutral-900">ChatDesk</span>
+      <header className="lg:hidden fixed top-0 inset-x-0 z-30 flex items-center justify-between bg-card border-b border-border px-4 h-14">
+        <span className="text-[15px] font-semibold text-foreground">ChatDesk</span>
         <button
           onClick={() => setMobileOpen(true)}
-          className="p-1.5 rounded-lg hover:bg-neutral-100 transition-colors text-neutral-600"
+          className="p-1.5 rounded-lg hover:bg-secondary transition-colors text-muted-foreground"
           aria-label="Open menu"
         >
           <IconMenu />
@@ -200,13 +178,12 @@ export function SidebarNav({ email, publicChatUrl }: SidebarNavProps) {
             className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl flex flex-col">
-            {/* Close button */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-100">
-              <span className="text-[15px] font-semibold text-neutral-900">ChatDesk</span>
+          <div className="fixed inset-y-0 left-0 z-50 w-64 bg-card shadow-xl flex flex-col">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+              <span className="text-[15px] font-semibold text-foreground">ChatDesk</span>
               <button
                 onClick={() => setMobileOpen(false)}
-                className="p-1.5 rounded-lg hover:bg-neutral-100 transition-colors text-neutral-500"
+                className="p-1.5 rounded-lg hover:bg-secondary transition-colors text-muted-foreground"
                 aria-label="Close menu"
               >
                 <IconClose />

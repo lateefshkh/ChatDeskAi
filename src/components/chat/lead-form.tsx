@@ -10,9 +10,10 @@ interface LeadFormProps {
   publicId: string;
   conversationId: string | null;
   onSuccess: () => void;
+  onSkip: () => void; // <-- NAYA PROP
 }
 
-export function LeadForm({ publicId, conversationId, onSuccess }: LeadFormProps) {
+export function LeadForm({ publicId, conversationId, onSuccess, onSkip }: LeadFormProps) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [consent, setConsent] = useState(false);
@@ -98,9 +99,24 @@ export function LeadForm({ publicId, conversationId, onSuccess }: LeadFormProps)
 
         {error && <p className="text-xs text-red-600">{error}</p>}
 
-        <Button type="submit" disabled={loading || !name || !phone} className="w-full" size="sm">
-          {loading ? "Sending..." : "Submit"}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onSkip}
+            className="flex-1"
+            disabled={loading}
+          >
+            Continue chatting
+          </Button>
+          <Button
+            type="submit"
+            disabled={loading || !name || !phone}
+            className="flex-1"
+          >
+            {loading ? "Sending..." : "Submit"}
+          </Button>
+        </div>
       </form>
     </div>
   );

@@ -1,14 +1,6 @@
 // src/app/api/payments/webhook/route.ts
-//
-// Purpose: Razorpay webhook handler for payment events.
-//
-// Ye kyun zaroori hai:
-// - Tenant ko activate karna sirf verified webhook se hota hai (redirect se nahi).
-// - Webhook signature timing-safe compare se verify hota hai.
-// - Idempotency: same event do baar process nahi hota.
-
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm"; // <-- sql import kiya
 import { db } from "@/lib/db/client";
 import { payments, tenants, webhookEvents } from "@/lib/db/schema";
 import { env } from "@/lib/env";
@@ -16,7 +8,6 @@ import { getPlan } from "@/lib/plans";
 
 export async function POST(request: Request): Promise<Response> {
   try {
-    // 1. RAW body read karein (Next.js request.text())
     const rawBody = await request.text();
     const signature = request.headers.get("x-razorpay-signature");
 
@@ -24,7 +15,7 @@ export async function POST(request: Request): Promise<Response> {
       return Response.json({ error: "No signature" }, { status: 400 });
     }
 
-    // 2. Signature verify karein (HMAC-SHA256, timing-safe)
+    // Signature verify
     const expectedSignature = createHmac("sha256", env.RAZORPAY_WEBHOOK_SECRET)
       .update(rawBody)
       .digest("hex");
@@ -42,7 +33,7 @@ export async function POST(request: Request): Promise<Response> {
     const event = JSON.parse(rawBody);
     const eventId = event.event_id || `evt_${Date.now()}`;
 
-    // 3. Idempotency: same event_id pehle process hua?
+    // Idempotency check
     const existing = await db
       .select()
       .from(webhookEvents)
@@ -53,14 +44,14 @@ export async function POST(request: Request): Promise<Response> {
       return Response.json({ status: "already_processed" });
     }
 
-    // 4. Record event
+    // Record event
     await db.insert(webhookEvents).values({
       eventId,
       type: event.event,
       processed: 0,
     });
 
-    // 5. Handle payment.captured
+    // Handle payment.captured
     if (event.event === "payment.captured") {
       const paymentEntity = event.payload.payment.entity;
       const orderId = paymentEntity.order_id;
@@ -68,25 +59,32 @@ export async function POST(request: Request): Promise<Response> {
       const planId = paymentEntity.notes?.planId;
 
       if (tenantId && planId) {
-        // Update tenant to active and set quota
         const plan = getPlan(planId);
-        await db.update(tenants)
-          .set({
-            status: "active",
-            planId: planId,
-            quotaMonthlyChats: plan?.chatLimit || 0,
-            updatedAt: new Date(),
-          })
-          .where(eq(tenants.id, tenantId));
+        
+        if (!plan) {
+          console.error("[webhook] Plan not found:", planId);
+        } else {
+          // ✅ ADDITIVE QUOTA: Purane chats ke upar naye chats add karein
+          await db.update(tenants)
+            .set({
+              status: "active",
+              planId: planId,
+              quotaMonthlyChats: sql`${tenants.quotaMonthlyChats} + ${plan.chatLimit}`,
+              updatedAt: new Date(),
+            })
+            .where(eq(tenants.id, tenantId));
 
-        // Update payment status
-        await db.update(payments)
-          .set({ status: "captured", razorpayPaymentId: paymentEntity.id })
-          .where(eq(payments.razorpayOrderId, orderId));
+          // Update payment status
+          await db.update(payments)
+            .set({ status: "captured", razorpayPaymentId: paymentEntity.id })
+            .where(eq(payments.razorpayOrderId, orderId));
+
+          console.log(`[webhook] Tenant ${tenantId} activated. Added ${plan.chatLimit} chats.`);
+        }
       }
     }
 
-    // 6. Mark processed
+    // Mark processed
     await db.update(webhookEvents)
       .set({ processed: 1, processedAt: new Date() })
       .where(eq(webhookEvents.eventId, eventId));

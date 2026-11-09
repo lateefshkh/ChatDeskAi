@@ -87,14 +87,21 @@ interface RateLimitResult {
 /**
  * Check signup rate limit for an IP.
  */
+// export async function checkSignupLimit(ip: string): Promise<RateLimitResult> {
+//   try {
+//     return await signupLimiter.limit(`ip:${ip}`);
+//   } catch (error) {
+//     console.error("[rate-limit] signup check failed:", error);
+//     // Fail-open: allow the request, log for investigation
+//     return { success: true, limit: 5, remaining: 5, reset: Date.now() + 3600_000 };
+//   }
+// }
+
+// for reoving rate limiting
 export async function checkSignupLimit(ip: string): Promise<RateLimitResult> {
-  try {
-    return await signupLimiter.limit(`ip:${ip}`);
-  } catch (error) {
-    console.error("[rate-limit] signup check failed:", error);
-    // Fail-open: allow the request, log for investigation
-    return { success: true, limit: 5, remaining: 5, reset: Date.now() + 3600_000 };
-  }
+  // TEMPORARY DEV BYPASS - ise production mein wapas enable karein
+  return { success: true, limit: 100, remaining: 100, reset: Date.now() + 60000 };
+  
 }
 
 /**

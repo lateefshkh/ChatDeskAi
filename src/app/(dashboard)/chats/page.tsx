@@ -2,14 +2,8 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { requireAuth } from "@/lib/auth/require-auth";
-import { listConversations } from "@/lib/dal/conversations";
-
-/** Convert a visitorId hash into a human-readable session label */
-function sessionLabel(visitorId: string, index: number): string {
-  // Use last 6 chars of visitorId as a short fingerprint
-  const short = visitorId.slice(-6).toUpperCase();
-  return `Session #${index + 1} · ${short}`;
-}
+import { listConversationsWithPreview } from "@/lib/dal/conversations";
+import { CopyButton } from "@/components/dashboard/copy-button";
 
 function formatDate(date: Date): string {
   const d = new Date(date);
@@ -28,94 +22,87 @@ function formatDate(date: Date): string {
 
 async function ChatsContent() {
   const ctx = await requireAuth();
-  const conversations = await listConversations(ctx.tenant.id, 50);
+  const conversations = await listConversationsWithPreview(ctx.tenant.id, 50);
+  const publicUrl = `${process.env.NEXT_PUBLIC_APP_URL}/c/${ctx.tenant.publicId}`;
 
   return (
-    <div>
-      {/* Page header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-xl font-semibold text-neutral-900">Chats</h1>
-          <p className="text-sm text-neutral-500 mt-0.5">
-            {conversations.length === 0
-              ? "No visitor conversations yet"
-              : `${conversations.length} conversation${conversations.length === 1 ? "" : "s"}`}
-          </p>
-        </div>
-        <Link
-          href={`/c/${ctx.tenant.publicId}`}
-          target="_blank"
-          className="inline-flex items-center gap-1.5 text-sm bg-neutral-900 text-white px-3.5 py-2 rounded-lg hover:bg-neutral-700 transition-colors"
-        >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-            <polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
-          </svg>
-          Preview chat
-        </Link>
+    <div className="max-w-6xl mx-auto py-8 px-4">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-ink tracking-tight mb-2">Chats</h1>
+        <p className="text-[17px] text-text">
+          {conversations.length === 0
+            ? "No visitor conversations yet"
+            : `${conversations.length} conversation${conversations.length === 1 ? "" : "s"}`}
+        </p>
       </div>
 
-      {conversations.length === 0 ? (
-        /* Empty state */
-        <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="w-12 h-12 bg-neutral-100 rounded-full flex items-center justify-center mb-4">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-400">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            </svg>
+      {/* Main Layout Grid: 12 columns */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        {/* RIGHT SIDE (Width badhayi: 7 columns out of 12) */}
+        <div className="lg:col-span-7 lg:col-start-6 lg:row-start-1 bg-card rounded-[26px] p-8">
+          <h2 className="text-xl font-bold text-ink mb-2">Public Chat Link</h2>
+          <p className="text-[17px] text-text mb-6">
+            Share this link with your visitors. They can chat with your AI assistant — no login required.
+          </p>
+          <div className="flex flex-col gap-3 bg-background p-3 rounded-xl">
+            <code className="text-sm font-mono text-ink break-all">
+              {publicUrl}
+            </code>
+            <CopyButton text={publicUrl} />
           </div>
-          <p className="text-sm font-medium text-neutral-900 mb-1">No conversations yet</p>
-          <p className="text-sm text-neutral-400 max-w-xs">
-            Share your chat link with visitors — conversations will appear here.
+          <p className="text-xs text-text/70 mt-4">
+            Note: Embed script (iframe) will be available in a future phase.
           </p>
         </div>
-      ) : (
-        /* Conversation list — sidebar-style rows */
-        <div className="bg-white rounded-xl border border-neutral-200 divide-y divide-neutral-100 overflow-hidden">
-          {conversations.map((conv, i) => (
-            <div
-              key={conv.id}
-              className="flex items-start gap-4 px-4 py-3.5 hover:bg-neutral-50 transition-colors"
-            >
-              {/* Avatar circle */}
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-100 to-violet-100 flex items-center justify-center shrink-0 mt-0.5">
-                <span className="text-xs font-semibold text-indigo-500">
-                  {conv.visitorId.slice(-2).toUpperCase()}
-                </span>
-              </div>
 
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-neutral-900 truncate">
-                  {sessionLabel(conv.visitorId, i)}
-                </p>
-                <p className="text-xs text-neutral-400 mt-0.5">
-                  {conv.messageCount} message{conv.messageCount === 1 ? "" : "s"}
-                </p>
-              </div>
-
-              {/* Timestamp */}
-              <span className="text-xs text-neutral-400 shrink-0 mt-0.5">
-                {formatDate(conv.createdAt)}
-              </span>
+        {/* LEFT SIDE (Width kam ki: 5 columns out of 12) */}
+        <div className="lg:col-span-5 lg:col-start-1 lg:row-start-1 space-y-4">
+          {conversations.length === 0 ? (
+            <div className="bg-card rounded-[26px] p-8 text-center">
+              <p className="text-[15px] font-medium text-ink mb-1">No conversations yet</p>
+              <p className="text-xs text-text">Once visitors chat, they'll appear here.</p>
             </div>
-          ))}
+          ) : (
+            conversations.map((conv) => (
+              <Link
+                key={conv.id}
+                href={`/chats/${conv.id}`}
+                className="block bg-card rounded-[26px] p-5 hover:bg-background transition-colors"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <span className="text-xs font-bold text-primary">
+                        {conv.visitorId.slice(-2).toUpperCase()}
+                      </span>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-ink truncate">
+                        {conv.preview}
+                      </p>
+                      <p className="text-xs text-text mt-0.5">
+                        {conv.messageCount} messages
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-xs text-text whitespace-nowrap shrink-0">
+                    {formatDate(conv.createdAt)}
+                  </span>
+                </div>
+              </Link>
+            ))
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
 
 export default function ChatsPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="space-y-3">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-14 bg-neutral-200 rounded-xl animate-pulse" />
-          ))}
-        </div>
-      }
-    >
+    <Suspense fallback={<div className="text-center py-12 text-text">Loading chats...</div>}>
       <ChatsContent />
     </Suspense>
   );

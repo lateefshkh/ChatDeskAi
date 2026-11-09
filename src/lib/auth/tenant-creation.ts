@@ -4,14 +4,8 @@
 //
 // Design:
 // - publicId = 22-char base64url random (unguessable, URL-safe).
-// - Status starts as 'pending_payment' (Phase 3 activates on payment).
+// - Status starts as 'active' with 10 free chats (free trial).
 // - Uses admin connection (RLS bypass) - tenant must be created before RLS applies.
-// - Atomic: if tenant creation fails, we surface error to caller (they roll back user).
-//
-// Ye kyun zaroori hai:
-// - publicId random hai - attacker tenant enumerate nahi kar sakta.
-// - 'pending_payment' status means paid features (chat) blocked until payment.
-// - Tenant creation failure must be visible - silent failure = broken workspace.
 
 import { randomBytes } from "node:crypto";
 import { eq } from "drizzle-orm";
@@ -20,7 +14,6 @@ import { tenants, type Tenant } from "@/lib/db/schema";
 
 /**
  * Generate a random, URL-safe publicId (22 chars = 128 bits entropy).
- * Collision probability: 2^-64 after 2^64 tenants (never in practice).
  */
 function generatePublicId(): string {
   return randomBytes(16).toString("base64url"); // 22 chars
@@ -48,7 +41,6 @@ export async function createTenantForOwner(
   }
 
   // Derive a default tenant name from email (e.g., "john" from john@example.com)
-  // Owner can rename later in dashboard settings.
   const defaultName = ownerEmail.split("@")[0]?.slice(0, 50) || "My Workspace";
 
   const publicId = generatePublicId();
@@ -59,9 +51,9 @@ export async function createTenantForOwner(
       name: defaultName,
       ownerUserId,
       publicId,
-      status: "pending_payment",
-      planId: null,
-      quotaMonthlyChats: 0,
+      status: "active",           
+      planId: "free-trial",       
+      quotaMonthlyChats: 10,       // ✅ YAHAN 10 KAR DIYA (pehle 5 tha)
       quotaUsedChats: 0,
     })
     .returning();

@@ -5,6 +5,7 @@ import { requireAuth } from "@/lib/auth/require-auth";
 import { listSources } from "@/lib/dal/sources";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { SkeletonPageHeader, SkeletonSourceRow } from "@/components/dashboard/skeleton";
 
 async function SourcesContent() {
   const ctx = await requireAuth();
@@ -12,7 +13,7 @@ async function SourcesContent() {
 
   return (
     <div>
-      <div className="mb-8 flex justify-between items-center">
+      <div className="mb-6 flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-semibold text-neutral-900 mb-1">Sources</h1>
           <p className="text-sm text-neutral-500">Your knowledge base.</p>
@@ -62,7 +63,23 @@ async function SourcesContent() {
 
 export default function SourcesPage() {
   return (
-    <Suspense fallback={<div className="text-center py-8 text-neutral-400">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="space-y-6">
+          <SkeletonPageHeader wide />
+          <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden">
+            <div className="px-5 py-4 border-b border-neutral-100">
+              <div className="h-4 w-28 bg-neutral-200 animate-pulse rounded" />
+            </div>
+            <div className="p-4 space-y-3">
+              {[1, 2, 3].map((i) => (
+                <SkeletonSourceRow key={i} />
+              ))}
+            </div>
+          </div>
+        </div>
+      }
+    >
       <SourcesContent />
     </Suspense>
   );

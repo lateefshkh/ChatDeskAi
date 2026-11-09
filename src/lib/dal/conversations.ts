@@ -3,25 +3,31 @@
 // Purpose: DAL for conversations (visitor chat sessions).
 //
 // Ye kyun zaroori hai:
-// - Visitor chat sessions track karne ke liye (Phase 5).
+// - Visitor chat sessions track karne ke liye.
 // - Har conversation ek tenant se linked hoti hai.
 // - Cross-tenant access RLS + withTenant se blocked.
 
-import { eq, and, desc, sql } from "drizzle-orm";
+import { eq, and, desc, asc, sql } from "drizzle-orm";
 import { withTenant } from "@/lib/db/with-tenant";
-import { conversations, type Conversation } from "@/lib/db/schema";
+import { conversations, messages, type Conversation } from "@/lib/db/schema";
 
-// ─── Create ───────────────────────────────────────────────────────────────
+// ─── Types ────────────────────────────────────────────────────────────────
+
+export interface ConversationWithPreview {
+  id: string;
+  visitorId: string;
+  messageCount: number;
+  createdAt: Date;
+  preview: string;
+}
 
 export interface CreateConversationInput {
   tenantId: string;
   visitorId: string;
 }
 
-/**
- * Create a new conversation for a visitor.
- * Message count starts at 0.
- */
+// ─── Create ───────────────────────────────────────────────────────────────
+
 export async function createConversation(
   input: CreateConversationInput
 ): Promise<Conversation> {
@@ -42,10 +48,6 @@ export async function createConversation(
 
 // ─── Read ─────────────────────────────────────────────────────────────────
 
-/**
- * List recent conversations for a tenant.
- * Limited to `limit` (default 20), newest first.
- */
 export async function listConversations(
   tenantId: string,
   limit = 20
@@ -61,8 +63,56 @@ export async function listConversations(
 }
 
 /**
- * Get a single conversation by id — tenant-scoped.
+ * List conversations with a preview of the first user message.
+ * This makes the chat list readable (headline instead of random IDs).
  */
+export async function listConversationsWithPreview(
+  tenantId: string,
+  limit = 50
+): Promise<ConversationWithPreview[]> {
+  return await withTenant(tenantId, async (tx) => {
+    const convs = await tx
+      .select()
+      .from(conversations)
+      .where(eq(conversations.tenantId, tenantId))
+      .orderBy(desc(conversations.createdAt))
+      .limit(limit);
+
+    if (convs.length === 0) return [];
+
+    const withPreviews = await Promise.all(
+      convs.map(async (conv) => {
+        const firstMsg = await tx
+          .select({ content: messages.content })
+          .from(messages)
+          .where(
+            and(
+              eq(messages.tenantId, tenantId),
+              eq(messages.conversationId, conv.id),
+              eq(messages.role, "user")
+            )
+          )
+          .orderBy(asc(messages.createdAt))
+          .limit(1);
+
+        const rawPreview = firstMsg[0]?.content || "New conversation";
+        const preview =
+          rawPreview.length > 60 ? rawPreview.slice(0, 60) + "..." : rawPreview;
+
+        return {
+          id: conv.id,
+          visitorId: conv.visitorId,
+          messageCount: conv.messageCount,
+          createdAt: conv.createdAt,
+          preview,
+        };
+      })
+    );
+
+    return withPreviews;
+  });
+}
+
 export async function getConversationById(
   tenantId: string,
   conversationId: string
@@ -82,9 +132,6 @@ export async function getConversationById(
   });
 }
 
-/**
- * Count conversations for a tenant (dashboard stats).
- */
 export async function countConversations(tenantId: string): Promise<number> {
   return await withTenant(tenantId, async (tx) => {
     const result = await tx
@@ -97,10 +144,6 @@ export async function countConversations(tenantId: string): Promise<number> {
 
 // ─── Update ───────────────────────────────────────────────────────────────
 
-/**
- * Increment message count for a conversation.
- * Called when a new message (user or assistant) is added.
- */
 export async function incrementMessageCount(
   tenantId: string,
   conversationId: string
