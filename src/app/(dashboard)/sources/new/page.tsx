@@ -4,10 +4,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
+import { Globe, FileText, ArrowLeft, Loader2, AlertCircle } from "lucide-react";
 
 type SourceType = "url" | "text";
 type ScrapingMode = "vercel" | "local";
@@ -15,7 +12,7 @@ type ScrapingMode = "vercel" | "local";
 export default function NewSourcePage() {
   const router = useRouter();
   const [type, setType] = useState<SourceType>("url");
-  const [mode, setMode] = useState<ScrapingMode>("vercel"); // <-- NAYA
+  const [mode, setMode] = useState<ScrapingMode>("vercel");
   const [label, setLabel] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,7 +27,7 @@ export default function NewSourcePage() {
       const res = await fetch("/api/sources", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type, label, content, mode }), // <-- mode bhejein
+        body: JSON.stringify({ type, label, content, mode }),
       });
 
       const data = await res.json();
@@ -45,140 +42,165 @@ export default function NewSourcePage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-foreground mb-1">Add knowledge source</h1>
-        <p className="text-sm text-muted-foreground">
-          Train your AI assistant with website links or text.
+    <div className="max-w-2xl mx-auto space-y-6">
+      <div>
+        <Link
+          href="/sources"
+          className="text-xs font-semibold text-[#0D4B37] hover:underline mb-3 inline-flex items-center gap-1.5"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Back to sources</span>
+        </Link>
+        <h1 className="text-2xl font-bold text-[#18181B] tracking-tight">Add Knowledge Source</h1>
+        <p className="text-xs text-[#71717A] mt-1">
+          Train your assistant with website documentation or raw text.
         </p>
       </div>
 
-      <Card>
-        <CardContent className="pt-6">
-          <form onSubmit={onSubmit} className="space-y-6">
-            {/* Type Selection */}
-            <div className="flex gap-4">
-              <button
-                type="button"
-                onClick={() => setType("url")}
-                className={`flex-1 py-3 px-4 border rounded-lg text-sm font-medium transition-colors ${
-                  type === "url"
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border text-foreground hover:border-primary/50"
-                }`}
-              >
-                Website URL
-              </button>
-              <button
-                type="button"
-                onClick={() => setType("text")}
-                className={`flex-1 py-3 px-4 border rounded-lg text-sm font-medium transition-colors ${
-                  type === "text"
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border text-foreground hover:border-primary/50"
-                }`}
-              >
-                Paste Text
-              </button>
-            </div>
+      <div className="bg-white rounded-[32px] p-8 border border-black/[0.04] shadow-[0_16px_36px_-10px_rgba(0,0,0,0.06)]">
+        <form onSubmit={onSubmit} className="space-y-6">
+          {/* Type Selection */}
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => setType("url")}
+              className={`flex-1 py-3 px-4 rounded-2xl text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                type === "url"
+                  ? "bg-[#0D4B37] text-white shadow-sm"
+                  : "bg-[#F9F8F5] border border-[#E4E2DC] text-[#52525B] hover:text-[#18181B]"
+              }`}
+            >
+              <Globe className="w-4 h-4" />
+              <span>Website URL</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setType("text")}
+              className={`flex-1 py-3 px-4 rounded-2xl text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                type === "text"
+                  ? "bg-[#0D4B37] text-white shadow-sm"
+                  : "bg-[#F9F8F5] border border-[#E4E2DC] text-[#52525B] hover:text-[#18181B]"
+              }`}
+            >
+              <FileText className="w-4 h-4" />
+              <span>Paste Text</span>
+            </button>
+          </div>
 
-            {/* Mode Selection (Only for URL) */}
-            {type === "url" && (
-              <div>
-                <Label className="mb-2 block">Scraping Mode</Label>
-                <div className="flex gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setMode("vercel")}
-                    className={`flex-1 py-3 px-4 border rounded-lg text-sm font-medium transition-colors ${
-                      mode === "vercel"
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border text-muted-foreground hover:border-primary/50"
-                    }`}
-                  >
-                    Vercel (Fast, 5 pages)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setMode("local")}
-                    className={`flex-1 py-3 px-4 border rounded-lg text-sm font-medium transition-colors ${
-                      mode === "local"
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border text-muted-foreground hover:border-primary/50"
-                    }`}
-                  >
-                    Local (Deep, 50 pages)
-                  </button>
-                </div>
-                <p className="text-xs text-muted-foreground mt-2">
-                  {mode === "vercel"
-                    ? "Best for deployed app. Scrapes up to 5 pages (fits Vercel 10s limit)."
-                    : "Best for local testing. Scrapes up to 50 pages (may take 1-2 minutes)."}
-                </p>
+          {/* Mode Selection (Only for URL) */}
+          {type === "url" && (
+            <div className="space-y-2">
+              <label className="block text-xs font-semibold text-[#18181B]">
+                Scraping Mode
+              </label>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setMode("vercel")}
+                  className={`flex-1 py-2.5 px-3 rounded-2xl text-xs font-semibold transition-all cursor-pointer ${
+                    mode === "vercel"
+                      ? "bg-[#E8F3EE] text-[#0D4B37] border border-[#CDE5DA]"
+                      : "bg-[#F9F8F5] border border-[#E4E2DC] text-[#71717A]"
+                  }`}
+                >
+                  Cloud (Fast, up to 5 pages)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMode("local")}
+                  className={`flex-1 py-2.5 px-3 rounded-2xl text-xs font-semibold transition-all cursor-pointer ${
+                    mode === "local"
+                      ? "bg-[#E8F3EE] text-[#0D4B37] border border-[#CDE5DA]"
+                      : "bg-[#F9F8F5] border border-[#E4E2DC] text-[#71717A]"
+                  }`}
+                >
+                  Deep Crawl (Up to 50 pages)
+                </button>
               </div>
-            )}
+              <p className="text-[11px] text-[#A1A1AA]">
+                {mode === "vercel"
+                  ? "Standard mode. Scrapes top pages within seconds."
+                  : "Comprehensive crawl for larger documentation sites."}
+              </p>
+            </div>
+          )}
 
-            {/* Label */}
-            <div className="space-y-1.5">
-              <Label htmlFor="label">Label</Label>
-              <Input
-                id="label"
-                value={label}
-                onChange={(e) => setLabel(e.target.value)}
-                placeholder={type === "url" ? "e.g. Main website" : "e.g. FAQ document"}
+          {/* Label */}
+          <div className="space-y-1.5">
+            <label htmlFor="label" className="block text-xs font-semibold text-[#18181B]">
+              Source Label
+            </label>
+            <input
+              id="label"
+              value={label}
+              onChange={(e) => setLabel(e.target.value)}
+              placeholder={type === "url" ? "e.g. Acme Documentation" : "e.g. Return Policy FAQ"}
+              required
+              className="w-full px-4 py-2.5 bg-[#F9F8F5] border border-[#E4E2DC] rounded-2xl text-xs text-[#18181B] placeholder-[#A1A1AA] focus:outline-none focus:border-[#0D4B37] focus:ring-2 focus:ring-[#0D4B37]/10 transition-all"
+            />
+          </div>
+
+          {/* Content */}
+          <div className="space-y-1.5">
+            <label htmlFor="content" className="block text-xs font-semibold text-[#18181B]">
+              {type === "url" ? "Target Website URL" : "Knowledge Text Content"}
+            </label>
+            {type === "url" ? (
+              <input
+                id="content"
+                type="url"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="https://docs.yourcompany.com"
                 required
+                className="w-full px-4 py-2.5 bg-[#F9F8F5] border border-[#E4E2DC] rounded-2xl text-xs text-[#18181B] placeholder-[#A1A1AA] focus:outline-none focus:border-[#0D4B37] focus:ring-2 focus:ring-[#0D4B37]/10 transition-all"
               />
-            </div>
-
-            {/* Content */}
-            <div className="space-y-1.5">
-              <Label htmlFor="content">
-                {type === "url" ? "Website URL" : "Content"}
-              </Label>
-              {type === "url" ? (
-                <Input
-                  id="content"
-                  type="url"
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  placeholder="https://example.com"
-                  required
-                />
-              ) : (
-                <textarea
-                  id="content"
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  placeholder="Paste your text here..."
-                  required
-                  rows={8}
-                  className="w-full px-3.5 py-2.5 bg-background border border-border rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all"
-                />
-              )}
-            </div>
-
-            {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-                {error}
-              </div>
+            ) : (
+              <textarea
+                id="content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="Paste product documentation, FAQs, or support articles here..."
+                required
+                rows={8}
+                className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E4E2DC] rounded-2xl text-xs text-[#18181B] placeholder-[#A1A1AA] focus:outline-none focus:border-[#0D4B37] focus:ring-2 focus:ring-[#0D4B37]/10 transition-all resize-y"
+              />
             )}
+          </div>
 
-            <div className="flex gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => router.back()}
-                disabled={loading}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={loading} className="flex-1">
-                {loading ? "Processing..." : "Add source"}
-              </Button>
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-2xl flex items-start gap-2 text-xs text-red-700">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+              <span>{error}</span>
             </div>
-          </form>
-        </CardContent>
-      </Card>
+          )}
+
+          <div className="flex gap-3 pt-2">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              disabled={loading}
+              className="tactile-pill-secondary px-6 py-2.5 text-xs font-semibold"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="tactile-pill-btn flex-1 py-2.5 px-5 text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Processing & Indexing...</span>
+                </>
+              ) : (
+                <span>Add Knowledge Source</span>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

@@ -6,8 +6,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { LeadForm } from "@/components/chat/lead-form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { ArrowRight, Bot, Send } from "lucide-react";
 
 export function ChatClient({ publicId }: { publicId: string }) {
   const [messages, setMessages] = useState<Array<{ role: string; content: string }>>([]);
@@ -81,7 +80,6 @@ export function ChatClient({ publicId }: { publicId: string }) {
         }
       }
 
-      // ✅ SMART DECLINE DETECTION
       const lowerAnswer = assistantMessage.toLowerCase();
       const hasDeclinePhrase =
         lowerAnswer.includes("don't have information") ||
@@ -89,7 +87,6 @@ export function ChatClient({ publicId }: { publicId: string }) {
         lowerAnswer.includes("share your contact details") ||
         lowerAnswer.includes("get back to you");
 
-      // Lead form sirf tabhi khule jab jawab chhota ho AUR mana kar raha ho
       if (isUnanswered || (hasDeclinePhrase && assistantMessage.length < 300)) {
         setShowLeadForm(true);
       }
@@ -101,53 +98,66 @@ export function ChatClient({ publicId }: { publicId: string }) {
   }
 
   return (
-    <div className="bg-card rounded-[32px] flex flex-col h-full w-full overflow-hidden relative">
+    <div className="bg-white rounded-[32px] border border-black/[0.04] shadow-[0_16px_36px_-10px_rgba(0,0,0,0.06)] flex flex-col h-full w-full overflow-hidden relative">
       {/* Main Content Area */}
-      <div className="flex-1 relative flex flex-col overflow-hidden bg-card">
-        
+      <div className="flex-1 relative flex flex-col overflow-hidden bg-white">
         {/* Empty State */}
-        <div className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-500 ease-in-out px-8 ${isStarted ? "opacity-0 pointer-events-none -translate-y-8" : "opacity-100 translate-y-0"}`}>
+        <div
+          className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-500 ease-in-out px-6 ${
+            isStarted ? "opacity-0 pointer-events-none -translate-y-8" : "opacity-100 translate-y-0"
+          }`}
+        >
           <div className="w-full max-w-md text-center">
-            <h2 className="text-3xl font-bold text-ink mb-3 tracking-tight">How can we help?</h2>
-            <p className="text-[17px] text-text mb-10">Ask me anything about your given sources.</p>
-            
-            <form onSubmit={handleSend} className="flex gap-3 items-center w-full">
-              <Input
+            <div className="w-12 h-12 rounded-full bg-[#E8F3EE] text-[#0D4B37] flex items-center justify-center mx-auto mb-4 shadow-sm">
+              <Bot className="w-6 h-6" />
+            </div>
+            <h2 className="text-2xl font-extrabold text-[#18181B] mb-2 tracking-tight">
+              How can we help?
+            </h2>
+            <p className="text-xs text-[#71717A] mb-8">
+              Ask any question about our products, documentation, or services.
+            </p>
+
+            <form onSubmit={handleSend} className="flex gap-2 items-center w-full">
+              <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Type your message..."
+                placeholder="Ask a question..."
                 disabled={loading}
-                className="flex-1 h-14 bg-background border-none rounded-full px-6 shadow-none focus-visible:ring-2 focus-visible:ring-primary text-[17px]"
+                className="flex-1 h-12 bg-[#F8F7F3] border border-[#E5E3DC] rounded-full px-5 text-xs text-[#18181B] placeholder-[#A1A1AA] focus:outline-none focus:border-[#0D4B37] focus:ring-2 focus:ring-[#0D4B37]/10 transition-all"
               />
-              <Button 
-                type="submit" 
-                disabled={loading || !input.trim()} 
-                className="h-14 px-8 bg-primary hover:bg-primary/90 rounded-full text-white font-medium text-[17px] transition-colors"
+              <button
+                type="submit"
+                disabled={loading || !input.trim()}
+                className="tactile-pill-btn h-12 px-6 text-xs font-semibold flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
-                Send
-              </Button>
+                <span>Send</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </form>
           </div>
         </div>
 
         {/* Chat Messages */}
-        <div className={`absolute inset-0 flex flex-col transition-all duration-500 ease-in-out ${isStarted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"}`}>
-          
-          <div className="flex-1 overflow-y-auto px-8 py-4 space-y-6">
+        <div
+          className={`absolute inset-0 flex flex-col transition-all duration-500 ease-in-out ${
+            isStarted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"
+          }`}
+        >
+          <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[85%] md:max-w-[75%] px-6 py-4 text-[17px] leading-relaxed ${
-                  m.role === "user" 
-                    ? "bg-primary text-white rounded-[24px] rounded-br-sm" 
-                    : "bg-background text-ink rounded-[24px] rounded-bl-sm"
-                }`}>
+                <div
+                  className={`max-w-[85%] md:max-w-[75%] px-5 py-3.5 text-xs leading-relaxed ${
+                    m.role === "user"
+                      ? "bg-[#0D4B37] text-white rounded-[22px] rounded-br-sm shadow-sm"
+                      : "bg-[#F8F7F3] border border-[#EDECE6] text-[#18181B] rounded-[22px] rounded-bl-sm shadow-sm"
+                  }`}
+                >
                   {m.content ? (
                     m.role === "assistant" ? (
-                      <div className="prose prose-sm max-w-none prose-p:leading-relaxed prose-headings:text-ink prose-headings:font-bold prose-headings:mb-4 prose-strong:text-ink prose-a:text-primary prose-table:w-full prose-table:border-collapse prose-th:border-b prose-th:border-divider prose-th:pb-3 prose-th:text-left prose-td:border-b prose-td:border-divider prose-td:py-3">
-                        <ReactMarkdown 
-                          remarkPlugins={[remarkGfm]} 
-                          rehypePlugins={[rehypeRaw]}
-                        >
+                      <div className="prose prose-sm max-w-none text-xs text-[#18181B] prose-p:leading-relaxed prose-headings:font-bold prose-headings:text-[#18181B] prose-strong:text-[#18181B] prose-a:text-[#0D4B37] prose-a:underline">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
                           {m.content}
                         </ReactMarkdown>
                       </div>
@@ -155,10 +165,10 @@ export function ChatClient({ publicId }: { publicId: string }) {
                       m.content
                     )
                   ) : (
-                    <span className="flex gap-1.5 items-center h-5">
-                      <span className="w-2 h-2 bg-text rounded-full animate-bounce" />
-                      <span className="w-2 h-2 bg-text rounded-full animate-bounce delay-100" />
-                      <span className="w-2 h-2 bg-text rounded-full animate-bounce delay-200" />
+                    <span className="flex gap-1.5 items-center h-4">
+                      <span className="w-1.5 h-1.5 bg-[#A1A1AA] rounded-full animate-bounce" />
+                      <span className="w-1.5 h-1.5 bg-[#A1A1AA] rounded-full animate-bounce delay-100" />
+                      <span className="w-1.5 h-1.5 bg-[#A1A1AA] rounded-full animate-bounce delay-200" />
                     </span>
                   )}
                 </div>
@@ -168,13 +178,16 @@ export function ChatClient({ publicId }: { publicId: string }) {
           </div>
 
           {showLeadForm && (
-            <div className="bg-card shrink-0 p-8">
+            <div className="bg-[#FAF9F5] border-t border-[#E5E3DC] shrink-0 p-5">
               <LeadForm
                 publicId={publicId}
                 conversationId={conversationId}
                 onSuccess={() => {
                   setShowLeadForm(false);
-                  setMessages((prev) => [...prev, { role: "assistant", content: "Thank you! We'll be in touch soon." }]);
+                  setMessages((prev) => [
+                    ...prev,
+                    { role: "assistant", content: "Thank you! We'll be in touch with you shortly." },
+                  ]);
                 }}
                 onSkip={() => setShowLeadForm(false)}
               />
@@ -182,22 +195,23 @@ export function ChatClient({ publicId }: { publicId: string }) {
           )}
 
           {!showLeadForm && (
-            <div className="p-6 shrink-0">
-              <form onSubmit={handleSend} className="flex gap-3 items-center">
-                <Input
+            <div className="p-4 bg-white border-t border-[#F0EFEA] shrink-0">
+              <form onSubmit={handleSend} className="flex gap-2 items-center">
+                <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Type your message..."
+                  placeholder="Type your question..."
                   disabled={loading}
-                  className="flex-1 h-14 bg-background border-none rounded-full px-6 shadow-none focus-visible:ring-2 focus-visible:ring-primary text-[17px]"
+                  className="flex-1 h-11 bg-[#F8F7F3] border border-[#E5E3DC] rounded-full px-5 text-xs text-[#18181B] placeholder-[#A1A1AA] focus:outline-none focus:border-[#0D4B37] focus:ring-2 focus:ring-[#0D4B37]/10 transition-all"
                 />
-                <Button 
-                  type="submit" 
-                  disabled={loading || !input.trim()} 
-                  className="h-14 px-8 bg-primary hover:bg-primary/90 rounded-full text-white font-medium text-[17px] transition-colors"
+                <button
+                  type="submit"
+                  disabled={loading || !input.trim()}
+                  className="tactile-pill-btn h-11 px-5 text-xs font-semibold flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                 >
-                  Send
-                </Button>
+                  <span>Send</span>
+                  <Send className="w-3.5 h-3.5" />
+                </button>
               </form>
             </div>
           )}

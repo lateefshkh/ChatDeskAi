@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Bot, CheckCircle2, AlertCircle, Clock, Loader2, ArrowRight } from "lucide-react";
 
 type Status = "verifying" | "success" | "error" | "missing-token";
 
@@ -20,7 +21,6 @@ export default function VerifyEmailPage() {
     }
 
     if (!token) {
-      // Token nahi hai (jo normal user ke liye hoga)
       setStatus("missing-token");
       return;
     }
@@ -40,7 +40,7 @@ export default function VerifyEmailPage() {
           const data = (await res.json().catch(() => ({}))) as { message?: string };
           setErrorMessage(
             data.message ||
-              "Verification failed. The link may be expired or invalid."
+              "Verification link is expired or invalid. Please request a new link."
           );
           setStatus("error");
         }
@@ -52,80 +52,85 @@ export default function VerifyEmailPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-sm border border-neutral-200 p-8 text-center">
-        <Link href="/" className="text-xl font-semibold text-neutral-900 block mb-6">
-          ChatDesk
+    <div className="min-h-screen bg-[#F4F3EE] flex items-center justify-center p-6 text-[#18181B] relative overflow-hidden">
+      {/* Soft Ambient Background Lighting */}
+      <div className="fixed top-0 right-0 w-[500px] h-[500px] rounded-full bg-amber-100/40 blur-3xl pointer-events-none" />
+      <div className="fixed bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-emerald-100/30 blur-3xl pointer-events-none" />
+
+      <div className="w-full max-w-md bg-white rounded-[32px] p-8 sm:p-10 border border-black/[0.04] shadow-[0_20px_45px_-12px_rgba(0,0,0,0.06)] text-center relative z-10">
+        <Link href="/" className="inline-flex items-center gap-2 mb-6">
+          <div className="w-8 h-8 rounded-full bg-[#0D4B37] flex items-center justify-center text-white shadow-sm">
+            <Bot className="w-4 h-4" />
+          </div>
+          <span className="text-base font-bold text-[#18181B] tracking-tight">ChatDesk AI</span>
         </Link>
 
         {status === "verifying" && (
-          <>
-            <div className="mb-4 flex justify-center">
-              <div className="h-12 w-12 border-4 border-neutral-200 border-t-neutral-900 rounded-full animate-spin" />
+          <div className="space-y-3 py-4">
+            <div className="w-12 h-12 rounded-full bg-[#E8F3EE] text-[#0D4B37] flex items-center justify-center mx-auto">
+              <Loader2 className="w-6 h-6 animate-spin" />
             </div>
-            <h1 className="text-xl font-semibold text-neutral-900 mb-2">
+            <h1 className="text-xl font-bold text-[#18181B]">
               Verifying your email...
             </h1>
-            <p className="text-sm text-neutral-500">Please wait a moment.</p>
-          </>
+            <p className="text-xs text-[#71717A]">
+              Confirming your security credentials. Please hold on.
+            </p>
+          </div>
         )}
 
         {status === "success" && (
-          <>
-            <div className="mb-4 flex justify-center">
-              <div className="h-12 w-12 bg-emerald-100 rounded-full flex items-center justify-center">
-                <svg className="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
+          <div className="space-y-3 py-4">
+            <div className="w-12 h-12 rounded-full bg-[#E8F3EE] text-[#0D4B37] flex items-center justify-center mx-auto">
+              <CheckCircle2 className="w-6 h-6" />
             </div>
-            <h1 className="text-xl font-semibold text-neutral-900 mb-2">
-              Email verified!
+            <h1 className="text-xl font-bold text-[#18181B]">
+              Email Verified Successfully
             </h1>
-            <p className="text-sm text-neutral-500">
-              Redirecting to login page...
+            <p className="text-xs text-[#71717A]">
+              Redirecting you to the sign-in portal...
             </p>
-          </>
+          </div>
         )}
 
         {status === "error" && (
-          <>
-            <div className="mb-4 flex justify-center">
-              <div className="h-12 w-12 bg-red-100 rounded-full flex items-center justify-center">
-                <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </div>
+          <div className="space-y-4 py-4">
+            <div className="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto">
+              <AlertCircle className="w-6 h-6" />
             </div>
-            <h1 className="text-xl font-semibold text-neutral-900 mb-2">
-              Verification failed
+            <h1 className="text-xl font-bold text-[#18181B]">
+              Verification Failed
             </h1>
-            <p className="text-sm text-neutral-500 mb-4">{errorMessage}</p>
-            <Link href="/login" className="text-sm text-neutral-900 font-medium hover:underline">
-              Back to login
+            <p className="text-xs text-[#71717A] max-w-xs mx-auto">{errorMessage}</p>
+            <Link
+              href="/login"
+              className="tactile-pill-btn inline-flex items-center gap-1.5 px-6 py-2.5 text-xs font-semibold"
+            >
+              <span>Back to Login</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
-          </>
+          </div>
         )}
 
         {status === "missing-token" && (
-          <>
-            <div className="mb-4 flex justify-center">
-              <div className="h-12 w-12 bg-amber-100 rounded-full flex items-center justify-center">
-                <svg className="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-              </div>
+          <div className="space-y-4 py-4">
+            <div className="w-12 h-12 rounded-full bg-[#FEF3C7] text-[#D97706] flex items-center justify-center mx-auto">
+              <Clock className="w-6 h-6" />
             </div>
-            <h1 className="text-xl font-semibold text-neutral-900 mb-2">
+            <h1 className="text-xl font-bold text-[#18181B]">
               Awaiting Verification
             </h1>
-            <p className="text-sm text-neutral-500 mb-4">
-              Your request has been sent to Headquarter. Once verified, you will be able to log in.
+            <p className="text-xs text-[#71717A] max-w-xs mx-auto leading-relaxed">
+              Your account registration is received. Once approved by headquarters, your workspace will be ready for login.
             </p>
-            <Link href="/login" className="text-sm text-neutral-900 font-medium hover:underline">
-              Back to login
+            <Link
+              href="/login"
+              className="tactile-pill-btn inline-flex items-center gap-1.5 px-6 py-2.5 text-xs font-semibold"
+            >
+              <span>Back to Login</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
-          </>
+          </div>
         )}
       </div>
     </div>

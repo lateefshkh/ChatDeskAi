@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { requireAuth } from "@/lib/auth/require-auth";
 import { getConversationById } from "@/lib/dal/conversations";
 import { listMessagesByConversation } from "@/lib/dal/messages";
+import { ArrowLeft, User, Bot } from "lucide-react";
 
 async function ConversationDetailContent({
   conversationId,
@@ -18,39 +19,62 @@ async function ConversationDetailContent({
   const messages = await listMessagesByConversation(ctx.tenant.id, conversationId);
 
   return (
-    <div>
+    <div className="space-y-6">
       {/* Header */}
-      <div className="mb-6">
+      <div>
         <Link
           href="/chats"
-          className="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block"
+          className="text-xs font-semibold text-[#0D4B37] hover:underline mb-3 inline-flex items-center gap-1.5"
         >
-          ← Back to chats
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Back to all chats</span>
         </Link>
-        <h1 className="text-2xl font-semibold text-foreground mb-1">
+        <h1 className="text-2xl font-bold text-[#18181B] tracking-tight">
           Conversation with Visitor {conversation.visitorId.slice(-6)}
         </h1>
-        <p className="text-sm text-muted-foreground">
-          {messages.length} message{messages.length !== 1 ? "s" : ""} ·{" "}
+        <p className="text-xs text-[#71717A] mt-1 font-mono">
+          {messages.length} message{messages.length !== 1 ? "s" : ""} —{" "}
           {new Date(conversation.createdAt).toLocaleString("en-IN")}
         </p>
       </div>
 
-      {/* Messages */}
-      <div className="bg-card border border-border rounded-xl p-4 space-y-3 max-h-[70vh] overflow-y-auto">
+      {/* Messages Feed */}
+      <div className="bg-white rounded-[32px] border border-black/[0.04] shadow-sm p-6 sm:p-8 space-y-4 max-h-[72vh] overflow-y-auto">
         {messages.map((m) => (
           <div
             key={m.id}
-            className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+            className={`flex items-start gap-3 ${
+              m.role === "user" ? "flex-row-reverse" : "flex-row"
+            }`}
           >
             <div
-              className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
+              className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-xs font-bold ${
                 m.role === "user"
-                  ? "bg-primary text-primary-foreground rounded-br-sm"
-                  : "bg-secondary text-foreground rounded-bl-sm"
+                  ? "bg-[#0D4B37] text-white"
+                  : "bg-[#E8F3EE] text-[#0D4B37]"
               }`}
             >
-              {m.content}
+              {m.role === "user" ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+            </div>
+
+            <div
+              className={`max-w-[80%] px-5 py-3.5 rounded-[22px] text-xs leading-relaxed ${
+                m.role === "user"
+                  ? "bg-[#0D4B37] text-white rounded-tr-sm shadow-sm"
+                  : "bg-[#F8F7F3] border border-[#EDECE6] text-[#18181B] rounded-tl-sm shadow-sm"
+              }`}
+            >
+              <div className="whitespace-pre-wrap">{m.content}</div>
+              <div
+                className={`text-[10px] mt-1 font-mono ${
+                  m.role === "user" ? "text-white/70 text-right" : "text-[#A1A1AA]"
+                }`}
+              >
+                {new Date(m.createdAt).toLocaleTimeString("en-IN", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </div>
             </div>
           </div>
         ))}
@@ -66,7 +90,7 @@ export default async function ConversationDetailPage({
 }) {
   const { id } = await params;
   return (
-    <Suspense fallback={<div className="text-center py-8 text-muted-foreground">Loading...</div>}>
+    <Suspense fallback={<div className="text-center py-8 text-xs text-[#71717A]">Loading conversation...</div>}>
       <ConversationDetailContent conversationId={id} />
     </Suspense>
   );
