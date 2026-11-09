@@ -17,26 +17,64 @@ export default function NewSourcePage() {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [debugInfo, setDebugInfo] = useState<string | null>(null);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    setDebugInfo(null);
     setLoading(true);
 
     try {
+      console.log("[client] Submitting:", { type, label, mode, contentLength: content.length });
+
       const res = await fetch("/api/sources", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type, label, content, mode }),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to create source");
+      // ✅ Step 1: Raw text padho — kabhi crash nahi karega
+      const rawText = await res.text();
 
+      // ✅ Step 2: Console + UI mein dikhao
+      console.log("[client] Status:", res.status);
+      console.log("[client] StatusText:", res.statusText);
+      console.log("[client] Raw response:", rawText);
+      console.log("[client] Content-Type:", res.headers.get("content-type"));
+
+      setDebugInfo(`HTTP ${res.status} — body length: ${rawText.length}`);
+
+      // ✅ Step 3: Empty response pakdo
+      if (!rawText || rawText.trim() === "") {
+        throw new Error(
+          `Server returned EMPTY response (HTTP ${res.status}). ` +
+          `Likely: function crashed/timed out before responding. Check server terminal for stack trace.`
+        );
+      }
+
+      // ✅ Step 4: JSON parse karo safely
+      let data: any;
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        throw new Error(
+          `Server returned non-JSON response (HTTP ${res.status}): ` +
+          rawText.slice(0, 300)
+        );
+      }
+
+      // ✅ Step 5: HTTP error handle karo
+      if (!res.ok) {
+        throw new Error(data?.error || `Request failed (HTTP ${res.status})`);
+      }
+
+      console.log("[client] Success:", data);
       router.push("/sources");
       router.refresh();
     } catch (err: any) {
-      setError(err.message);
+      console.error("[client] Submit error:", err);
+      setError(err?.message ?? String(err));
       setLoading(false);
     }
   }
@@ -171,7 +209,13 @@ export default function NewSourcePage() {
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-2xl flex items-start gap-2 text-xs text-red-700">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{error}</span>
+              <div className="flex-1">
+                <div className="font-semibold">Error</div>
+                <div className="mt-1 break-words">{error}</div>
+                {debugInfo && (
+                  <div className="mt-1 text-[10px] text-red-500">{debugInfo}</div>
+                )}
+              </div>
             </div>
           )}
 
