@@ -39,7 +39,7 @@ export function DeleteAccountModal({ open, onClose, email }: DeleteAccountModalP
       });
 
       if (res.ok) {
-        // Success — redirect to home page
+        // Success - redirect to home page
        router.push("/signup?deleted=1");
         router.refresh();
       } else {

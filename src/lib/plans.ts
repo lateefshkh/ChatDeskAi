@@ -1,6 +1,6 @@
 // src/lib/plans.ts
 //
-// Purpose: Plan definitions — single source of truth.
+// Purpose: Plan definitions - single source of truth.
 // Note: Plans are defined in CODE, not in DB. This prevents price tampering.
 
 export type PlanType = "one_time" | "subscription";

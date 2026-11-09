@@ -4,13 +4,13 @@
 //
 // Design:
 // - Every function takes tenantId as first argument (RLS enforced via withTenant).
-// - No direct db access — always goes through withTenant().
+// - No direct db access - always goes through withTenant().
 // - Returns null/empty array if not found (never throws for "not found").
 // - Throws typed errors for actual failures.
 //
 // Ye kyun zaroori hai:
 // - RLS + withTenant = double protection. Application bug ho bhi jaye to DB block karega.
-// - tenantId argument mandatory hai — koi function bina tenantId ke query nahi kar sakta.
+// - tenantId argument mandatory hai - koi function bina tenantId ke query nahi kar sakta.
 // - Har function ka isolation test hoga.
 
 import { eq, and, desc, asc, sql } from "drizzle-orm";
@@ -81,7 +81,7 @@ export async function listSources(tenantId: string): Promise<Source[]> {
 }
 
 /**
- * Get a single source by id — tenant-scoped.
+ * Get a single source by id - tenant-scoped.
  * Returns null if not found OR if it belongs to another tenant (RLS hides it).
  */
 export async function getSourceById(

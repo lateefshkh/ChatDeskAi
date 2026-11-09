@@ -56,8 +56,8 @@ export function LeadForm({ publicId, conversationId, onSuccess, onSkip }: LeadFo
   }
 
   return (
-    <div className="p-4 bg-neutral-50 border-t border-neutral-200">
-      <p className="text-sm text-neutral-600 mb-3">
+    <div className="p-4 bg-[#F8F7F3] rounded-2xl border border-[#EDECE6]">
+      <p className="text-xs font-medium text-[#111827] mb-3">
         Share your contact details and our team will get back to you.
       </p>
       <form onSubmit={handleSubmit} className="space-y-3">
@@ -71,6 +71,7 @@ export function LeadForm({ publicId, conversationId, onSuccess, onSkip }: LeadFo
               onChange={(e) => setName(e.target.value)}
               required
               disabled={loading}
+              className="bg-white border-[#DDD7CD] rounded-full text-xs text-[#111827]"
             />
           </div>
           <div>
@@ -82,17 +83,18 @@ export function LeadForm({ publicId, conversationId, onSuccess, onSkip }: LeadFo
               onChange={(e) => setPhone(e.target.value)}
               required
               disabled={loading}
+              className="bg-white border-[#DDD7CD] rounded-full text-xs text-[#111827]"
             />
           </div>
         </div>
         
-        <label className="flex items-center gap-2 text-xs text-neutral-500">
+        <label className="flex items-center gap-2 text-xs text-[#6B7280]">
           <input
             type="checkbox"
             checked={consent}
             onChange={(e) => setConsent(e.target.checked)}
             required
-            className="rounded border-neutral-300"
+            className="rounded border-[#DDD7CD] text-[#134235] focus:ring-[#134235]"
           />
           I agree to be contacted.
         </label>
@@ -104,7 +106,7 @@ export function LeadForm({ publicId, conversationId, onSuccess, onSkip }: LeadFo
             type="button"
             variant="outline"
             onClick={onSkip}
-            className="flex-1"
+            className="flex-1 rounded-full text-xs font-semibold border-[#DDD7CD] hover:bg-white text-[#111827]"
             disabled={loading}
           >
             Continue chatting
@@ -112,7 +114,7 @@ export function LeadForm({ publicId, conversationId, onSuccess, onSkip }: LeadFo
           <Button
             type="submit"
             disabled={loading || !name || !phone}
-            className="flex-1"
+            className="flex-1 rounded-full text-xs font-semibold bg-[#134235] hover:bg-[#0D2F25] text-white"
           >
             {loading ? "Sending..." : "Submit"}
           </Button>

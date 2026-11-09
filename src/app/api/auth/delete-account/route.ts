@@ -50,7 +50,7 @@ export async function POST(request: Request): Promise<Response> {
       );
     }
 
-    // 4. Delete everything — order matters (FK constraints)
+    // 4. Delete everything - order matters (FK constraints)
     const userId = ctx.user.id;
     const tenantId = ctx.tenant?.id;
 

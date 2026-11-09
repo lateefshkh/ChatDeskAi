@@ -33,7 +33,7 @@ async function ConversationDetailContent({
           Conversation with Visitor {conversation.visitorId.slice(-6)}
         </h1>
         <p className="text-xs text-[#71717A] mt-1 font-mono">
-          {messages.length} message{messages.length !== 1 ? "s" : ""} —{" "}
+          {messages.length} message{messages.length !== 1 ? "s" : ""} -{" "}
           {new Date(conversation.createdAt).toLocaleString("en-IN")}
         </p>
       </div>

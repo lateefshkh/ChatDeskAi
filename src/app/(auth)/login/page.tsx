@@ -76,26 +76,26 @@ export default function LoginPage() {
     <div>
       {/* Header */}
       <div className="mb-7">
-        <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#E8F3EE] border border-[#CDE5DA] text-[#0D4B37] text-xs font-semibold mb-3">
+        <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#E3EDE7] border border-[#C5DCD0] text-[#134235] text-xs font-semibold mb-3">
           <span>Account Login</span>
         </div>
-        <h1 className="text-2xl font-bold text-[#18181B] tracking-tight">
+        <h1 className="text-2xl font-bold text-[#111827] tracking-tight">
           Welcome back
         </h1>
-        <p className="text-xs text-[#71717A] mt-1">
+        <p className="text-xs text-[#6B7280] mt-1">
           Sign in to manage your assistant, knowledge base, and customer leads.
         </p>
       </div>
 
       {/* Notifications */}
       {justVerified && (
-        <div className="mb-5 p-3.5 bg-[#E8F3EE] border border-[#CDE5DA] rounded-2xl flex items-center gap-2.5 text-xs text-[#0D4B37]">
+        <div className="mb-5 p-3.5 bg-[#E3EDE7] border border-[#C5DCD0] rounded-2xl flex items-center gap-2.5 text-xs text-[#134235]">
           <CheckCircle2 className="w-4 h-4 shrink-0" />
           <span>Email verified! Please log in below.</span>
         </div>
       )}
       {justReset && (
-        <div className="mb-5 p-3.5 bg-[#E8F3EE] border border-[#CDE5DA] rounded-2xl flex items-center gap-2.5 text-xs text-[#0D4B37]">
+        <div className="mb-5 p-3.5 bg-[#E3EDE7] border border-[#C5DCD0] rounded-2xl flex items-center gap-2.5 text-xs text-[#134235]">
           <CheckCircle2 className="w-4 h-4 shrink-0" />
           <span>Password reset successful. Sign in with your new password.</span>
         </div>
@@ -158,7 +158,7 @@ export default function LoginPage() {
               autoComplete="new-password"
               disabled={loading}
               placeholder="••••••••••••"
-              className="w-full pl-10 pr-3.5 py-2.5 bg-[#F9F8F5] border border-[#E4E2DC] rounded-2xl text-xs text-[#18181B] placeholder-[#A1A1AA] focus:outline-none focus:border-[#0D4B37] focus:ring-2 focus:ring-[#0D4B37]/10 transition-all disabled:opacity-50"
+              className="w-full pl-10 pr-3.5 py-2.5 bg-[#F9F8F5] border border-[#DDD7CD] rounded-2xl text-xs text-[#111827] placeholder-[#A1A1AA] focus:outline-none focus:border-[#134235] focus:ring-2 focus:ring-[#134235]/10 transition-all disabled:opacity-50"
             />
           </div>
         </div>
@@ -190,11 +190,11 @@ export default function LoginPage() {
       </form>
 
       <div className="mt-7 pt-6 border-t border-[#F0EFEA] text-center">
-        <p className="text-xs text-[#71717A]">
+        <p className="text-xs text-[#6B7280]">
           Don&apos;t have an account yet?{" "}
           <Link
             href="/signup"
-            className="text-[#0D4B37] font-bold hover:underline transition-colors"
+            className="text-[#134235] font-bold hover:underline transition-colors"
           >
             Create free account
           </Link>

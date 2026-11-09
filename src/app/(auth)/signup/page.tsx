@@ -96,20 +96,20 @@ export default function SignupPage() {
     <div>
       {/* Header */}
       <div className="mb-6">
-        <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#E8F3EE] border border-[#CDE5DA] text-[#0D4B37] text-xs font-semibold mb-3">
-          <span>10 Free Chats Included — No Credit Card Required</span>
+        <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#E3EDE7] border border-[#C5DCD0] text-[#134235] text-xs font-semibold mb-3">
+          <span>10 Free Chats Included - No Credit Card Required</span>
         </div>
-        <h1 className="text-2xl font-bold text-[#18181B] tracking-tight">
+        <h1 className="text-2xl font-bold text-[#111827] tracking-tight">
           Create your account
         </h1>
-        <p className="text-xs text-[#71717A] mt-1">
+        <p className="text-xs text-[#6B7280] mt-1">
           Set up your website assistant in minutes.
         </p>
       </div>
 
       {/* Account Deleted Success Banner */}
       {justDeleted && (
-        <div className="mb-4 p-3 bg-[#E8F3EE] border border-[#CDE5DA] rounded-2xl flex items-center gap-2 text-xs text-[#0D4B37]">
+        <div className="mb-4 p-3 bg-[#E3EDE7] border border-[#C5DCD0] rounded-2xl flex items-center gap-2 text-xs text-[#134235]">
           <CheckCircle2 className="w-4 h-4 shrink-0" />
           <span>Your account has been deleted. You can create a fresh account below.</span>
         </div>
@@ -221,7 +221,7 @@ export default function SignupPage() {
               autoComplete="new-password"
               disabled={loading}
               placeholder="Re-enter password"
-              className="w-full pl-10 pr-3.5 py-2.5 bg-[#F9F8F5] border border-[#E4E2DC] rounded-2xl text-xs text-[#18181B] placeholder-[#A1A1AA] focus:outline-none focus:border-[#0D4B37] focus:ring-2 focus:ring-[#0D4B37]/10 transition-all disabled:opacity-50"
+              className="w-full pl-10 pr-3.5 py-2.5 bg-[#F9F8F5] border border-[#DDD7CD] rounded-2xl text-xs text-[#111827] placeholder-[#A1A1AA] focus:outline-none focus:border-[#134235] focus:ring-2 focus:ring-[#134235]/10 transition-all disabled:opacity-50"
             />
           </div>
         </div>
@@ -266,9 +266,9 @@ export default function SignupPage() {
 
       {/* Footer Links */}
       <div className="mt-6 pt-5 border-t border-[#F0EFEA] text-center space-y-2">
-        <p className="text-xs text-[#71717A]">
+        <p className="text-xs text-[#6B7280]">
           Already have an account?{" "}
-          <Link href="/login" className="text-[#0D4B37] font-bold hover:underline">
+          <Link href="/login" className="text-[#134235] font-bold hover:underline">
             Sign in
           </Link>
         </p>

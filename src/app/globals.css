@@ -30,19 +30,19 @@
   --radius-xl: 36px;
 }
 
-/* ─── VISION PRO / TACTILE LIGHT THEME (Matches reference photo) ─────── */
+/* ─── TRUSTY STORYTELLING TACTILE THEME ─────────────────────────────── */
 :root {
   --bg: #F4F3EE;            /* Warm tactile porcelain background */
   --card: #FFFFFF;          /* Pure crisp white tactile card */
-  --ink: #18181B;           /* Deep elegant charcoal black */
-  --text-muted: #71717A;    /* Soft zinc text */
-  --divider: #E4E2DC;       /* Warm subtle border */
-  --primary: #0D4B37;       /* Deep Forest Pine Green (from reference photo) */
-  --primary-hover: #083828;
-  --secondary: #FDF4E6;     /* Warm ivory / peach tint */
+  --ink: #111827;           /* Deep elegant charcoal black */
+  --text-muted: #6B7280;    /* Soft warm zinc text */
+  --divider: #DDD7CD;       /* Warm subtle parchment border */
+  --primary: #134235;       /* Heritage Deep Pine Green */
+  --primary-hover: #0D2F25;
+  --secondary: #F7F5F0;     /* Warm linen / parchment */
   --muted: #ECEAE3;
-  --accent-amber: #F59E0B;  /* Warm golden amber */
-  --accent-orange: #EA580C; /* Sunset orange */
+  --accent-amber: #C86D51;  /* Warm Terracotta storytelling tone */
+  --accent-orange: #8C3F2B; /* Cognac amber tone */
 }
 
 @layer base {
@@ -63,35 +63,35 @@
 .tactile-card {
   background: #FFFFFF;
   border: 1px solid rgba(0, 0, 0, 0.04);
-  box-shadow: 0 16px 36px -12px rgba(26, 26, 26, 0.06), 0 2px 8px -2px rgba(26, 26, 26, 0.03);
+  box-shadow: 0 16px 36px -12px rgba(19, 66, 53, 0.06), 0 2px 8px -2px rgba(19, 66, 53, 0.03);
   border-radius: 28px;
 }
 
 .tactile-pill-btn {
-  background: #0D4B37;
+  background: #134235;
   color: #FFFFFF;
   border-radius: 9999px;
-  box-shadow: 0 6px 18px -4px rgba(13, 75, 55, 0.35);
+  box-shadow: 0 6px 20px -4px rgba(19, 66, 53, 0.35);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .tactile-pill-btn:hover {
-  background: #093728;
+  background: #0D2F25;
   transform: translateY(-1px);
-  box-shadow: 0 8px 22px -4px rgba(13, 75, 55, 0.45);
+  box-shadow: 0 8px 24px -4px rgba(19, 66, 53, 0.45);
 }
 
 .tactile-pill-secondary {
   background: #FFFFFF;
-  color: #18181B;
-  border: 1px solid #E4E2DC;
+  color: #111827;
+  border: 1px solid #DDD7CD;
   border-radius: 9999px;
   box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.04);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .tactile-pill-secondary:hover {
-  background: #F9F8F5;
-  border-color: #D6D3CB;
+  background: #F7F5F0;
+  border-color: #C8C2B7;
   transform: translateY(-1px);
 }

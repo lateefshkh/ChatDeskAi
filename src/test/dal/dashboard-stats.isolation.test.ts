@@ -18,7 +18,7 @@ const adminDb = drizzle({ client: adminPool });
 const tenantAId = randomUUID();
 const tenantBId = randomUUID();
 
-describe("Dashboard Stats — Tenant Isolation", () => {
+describe("Dashboard Stats - Tenant Isolation", () => {
   beforeAll(async () => {
     await adminDb.insert(tenants).values([
       {

@@ -23,7 +23,7 @@ const tenantBId = randomUUID();
 let sourceAId: string;
 let sourceBId: string;
 
-describe("Chunks DAL — Tenant Isolation", () => {
+describe("Chunks DAL - Tenant Isolation", () => {
   beforeAll(async () => {
     await adminDb.insert(tenants).values([
       {

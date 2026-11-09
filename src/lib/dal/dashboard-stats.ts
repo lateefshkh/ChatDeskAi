@@ -3,7 +3,7 @@
 // Purpose: Aggregate stats for the dashboard.
 //
 // Design:
-// - Single function `getDashboardStats(tenantId)` — one DB round-trip for all counts.
+// - Single function `getDashboardStats(tenantId)` - one DB round-trip for all counts.
 // - Uses withTenant() so RLS enforced.
 // - Returns typed object for UI consumption.
 

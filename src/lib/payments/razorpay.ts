@@ -1,7 +1,7 @@
 // src/lib/payments/razorpay.ts
 //
 // Purpose: Razorpay SDK singleton.
-// Server-side only — secret key never exposed to client.
+// Server-side only - secret key never exposed to client.
 
 import Razorpay from "razorpay";
 import { env } from "@/lib/env";

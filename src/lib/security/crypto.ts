@@ -9,7 +9,7 @@ const key = Buffer.from(env.FIELD_ENCRYPTION_KEY, "hex");
 
 /**
  * Encrypt a plaintext field using AES-256-GCM.
- * Returns { ciphertext, iv, tag } — all hex-encoded.
+ * Returns { ciphertext, iv, tag } - all hex-encoded.
  */
 export function encryptField(plaintext: string): {
   ciphertext: string;

@@ -26,7 +26,7 @@ import { tenants } from "@/lib/db/schema";
 import { env } from "@/lib/env";
 import { closeAdminPool } from "@/lib/db/with-tenant";
 
-// Admin connection (bypasses RLS) — test setup/cleanup only
+// Admin connection (bypasses RLS) - test setup/cleanup only
 const adminPool = new Pool({ connectionString: env.DATABASE_ADMIN_URL });
 const adminDb = drizzle({ client: adminPool });
 
@@ -35,7 +35,7 @@ const tenantBId = randomUUID();
 let sourceAId: string;
 let sourceBId: string;
 
-describe("Sources DAL — Tenant Isolation", () => {
+describe("Sources DAL - Tenant Isolation", () => {
   beforeAll(async () => {
     // Seed tenants
     await adminDb.insert(tenants).values([

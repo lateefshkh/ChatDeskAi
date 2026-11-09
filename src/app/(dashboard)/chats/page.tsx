@@ -30,11 +30,11 @@ async function ChatsContent() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#E8F3EE] border border-[#CDE5DA] text-[#0D4B37] text-xs font-semibold mb-2">
+        <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#E3EDE7] border border-[#C5DCD0] text-[#134235] text-xs font-semibold mb-2">
           <span>Inquiries</span>
         </div>
-        <h1 className="text-3xl font-extrabold text-[#18181B] tracking-tight">Chats</h1>
-        <p className="text-xs text-[#71717A] mt-1">
+        <h1 className="text-3xl font-extrabold text-[#111827] tracking-tight">Chats</h1>
+        <p className="text-xs text-[#6B7280] mt-1">
           {conversations.length === 0
             ? "No visitor conversations recorded yet"
             : `${conversations.length} total conversation${conversations.length === 1 ? "" : "s"}`}
@@ -64,23 +64,23 @@ async function ChatsContent() {
               >
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3.5 min-w-0">
-                    <div className="w-9 h-9 rounded-full bg-[#E8F3EE] text-[#0D4B37] flex items-center justify-center font-bold text-xs shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-[#E3EDE7] text-[#134235] flex items-center justify-center font-bold text-xs shrink-0">
                       {conv.visitorId.slice(-2).toUpperCase()}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-xs font-bold text-[#18181B] truncate group-hover:text-[#0D4B37] transition-colors">
+                      <p className="text-xs font-bold text-[#111827] truncate group-hover:text-[#134235] transition-colors">
                         {conv.preview || `Visitor ${conv.visitorId.slice(-6)}`}
                       </p>
-                      <p className="text-[11px] text-[#71717A] mt-0.5">
+                      <p className="text-[11px] text-[#6B7280] mt-0.5">
                         {conv.messageCount} messages
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-xs font-mono text-[#71717A]">
+                    <span className="text-xs font-mono text-[#6B7280]">
                       {formatDate(conv.createdAt)}
                     </span>
-                    <ArrowRight className="w-3.5 h-3.5 text-[#A1A1AA] group-hover:translate-x-0.5 group-hover:text-[#0D4B37] transition-all" />
+                    <ArrowRight className="w-3.5 h-3.5 text-[#A1A1AA] group-hover:translate-x-0.5 group-hover:text-[#134235] transition-all" />
                   </div>
                 </div>
               </Link>
@@ -91,7 +91,7 @@ async function ChatsContent() {
         {/* RIGHT: Public Chat Link Card (5 cols) */}
         <div className="lg:col-span-5 bg-white rounded-[28px] p-7 border border-black/[0.04] shadow-sm space-y-5">
           <div>
-            <div className="w-10 h-10 rounded-2xl bg-[#E8F3EE] text-[#0D4B37] flex items-center justify-center mb-4">
+            <div className="w-10 h-10 rounded-2xl bg-[#E3EDE7] text-[#134235] flex items-center justify-center mb-4">
               <Globe className="w-5 h-5" />
             </div>
             <h2 className="text-lg font-bold text-[#18181B]">Public Chat Link</h2>

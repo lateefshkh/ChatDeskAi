@@ -108,13 +108,13 @@ export function ChatClient({ publicId }: { publicId: string }) {
           }`}
         >
           <div className="w-full max-w-md text-center">
-            <div className="w-12 h-12 rounded-full bg-[#E8F3EE] text-[#0D4B37] flex items-center justify-center mx-auto mb-4 shadow-sm">
+            <div className="w-12 h-12 rounded-full bg-[#E3EDE7] text-[#134235] flex items-center justify-center mx-auto mb-4 shadow-sm">
               <Bot className="w-6 h-6" />
             </div>
-            <h2 className="text-2xl font-extrabold text-[#18181B] mb-2 tracking-tight">
+            <h2 className="text-2xl font-extrabold text-[#111827] mb-2 tracking-tight">
               How can we help?
             </h2>
-            <p className="text-xs text-[#71717A] mb-8">
+            <p className="text-xs text-[#6B7280] mb-8">
               Ask any question about our products, documentation, or services.
             </p>
 
@@ -124,7 +124,7 @@ export function ChatClient({ publicId }: { publicId: string }) {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask a question..."
                 disabled={loading}
-                className="flex-1 h-12 bg-[#F8F7F3] border border-[#E5E3DC] rounded-full px-5 text-xs text-[#18181B] placeholder-[#A1A1AA] focus:outline-none focus:border-[#0D4B37] focus:ring-2 focus:ring-[#0D4B37]/10 transition-all"
+                className="flex-1 h-12 bg-[#F8F7F3] border border-[#DDD7CD] rounded-full px-5 text-xs text-[#111827] placeholder-[#A1A1AA] focus:outline-none focus:border-[#134235] focus:ring-2 focus:ring-[#134235]/10 transition-all"
               />
               <button
                 type="submit"
@@ -150,13 +150,13 @@ export function ChatClient({ publicId }: { publicId: string }) {
                 <div
                   className={`max-w-[85%] md:max-w-[75%] px-5 py-3.5 text-xs leading-relaxed ${
                     m.role === "user"
-                      ? "bg-[#0D4B37] text-white rounded-[22px] rounded-br-sm shadow-sm"
-                      : "bg-[#F8F7F3] border border-[#EDECE6] text-[#18181B] rounded-[22px] rounded-bl-sm shadow-sm"
+                      ? "bg-[#134235] text-white rounded-[22px] rounded-br-sm shadow-sm"
+                      : "bg-[#F8F7F3] border border-[#EDECE6] text-[#111827] rounded-[22px] rounded-bl-sm shadow-sm"
                   }`}
                 >
                   {m.content ? (
                     m.role === "assistant" ? (
-                      <div className="prose prose-sm max-w-none text-xs text-[#18181B] prose-p:leading-relaxed prose-headings:font-bold prose-headings:text-[#18181B] prose-strong:text-[#18181B] prose-a:text-[#0D4B37] prose-a:underline">
+                      <div className="prose prose-sm max-w-none text-xs text-[#111827] prose-p:leading-relaxed prose-headings:font-bold prose-headings:text-[#111827] prose-strong:text-[#111827] prose-a:text-[#134235] prose-a:underline">
                         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
                           {m.content}
                         </ReactMarkdown>
@@ -178,7 +178,7 @@ export function ChatClient({ publicId }: { publicId: string }) {
           </div>
 
           {showLeadForm && (
-            <div className="bg-[#FAF9F5] border-t border-[#E5E3DC] shrink-0 p-5">
+            <div className="bg-[#FAF9F5] border-t border-[#DDD7CD] shrink-0 p-5">
               <LeadForm
                 publicId={publicId}
                 conversationId={conversationId}
@@ -202,7 +202,7 @@ export function ChatClient({ publicId }: { publicId: string }) {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Type your question..."
                   disabled={loading}
-                  className="flex-1 h-11 bg-[#F8F7F3] border border-[#E5E3DC] rounded-full px-5 text-xs text-[#18181B] placeholder-[#A1A1AA] focus:outline-none focus:border-[#0D4B37] focus:ring-2 focus:ring-[#0D4B37]/10 transition-all"
+                  className="flex-1 h-11 bg-[#F8F7F3] border border-[#DDD7CD] rounded-full px-5 text-xs text-[#111827] placeholder-[#A1A1AA] focus:outline-none focus:border-[#134235] focus:ring-2 focus:ring-[#134235]/10 transition-all"
                 />
                 <button
                   type="submit"

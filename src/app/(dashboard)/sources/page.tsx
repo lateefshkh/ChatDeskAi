@@ -16,11 +16,11 @@ async function SourcesContent() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#E8F3EE] border border-[#CDE5DA] text-[#0D4B37] text-xs font-semibold mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#E3EDE7] border border-[#C5DCD0] text-[#134235] text-xs font-semibold mb-2">
             <span>Knowledge Base</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-[#18181B] tracking-tight">Sources</h1>
-          <p className="text-xs text-[#71717A] mt-1">
+          <h1 className="text-3xl font-extrabold text-[#111827] tracking-tight">Sources</h1>
+          <p className="text-xs text-[#6B7280] mt-1">
             Websites, documentation, and text guides indexed for your assistant.
           </p>
         </div>
@@ -68,7 +68,7 @@ async function SourcesContent() {
                 className="flex items-center justify-between p-4 bg-[#F8F7F3] rounded-2xl border border-[#EDECE6] hover:border-[#DDD9D0] transition-colors"
               >
                 <div className="flex items-center gap-3.5 min-w-0 pr-4">
-                  <div className="w-9 h-9 rounded-xl bg-white border border-[#E5E3DC] flex items-center justify-center text-[#0D4B37] shrink-0 shadow-sm">
+                  <div className="w-9 h-9 rounded-xl bg-white border border-[#DDD7CD] flex items-center justify-center text-[#134235] shrink-0 shadow-sm">
                     {source.type === "url" ? (
                       <Globe className="w-4 h-4" />
                     ) : (
@@ -76,11 +76,11 @@ async function SourcesContent() {
                     )}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-bold text-[#18181B] truncate">{source.label}</p>
-                    <p className="text-[11px] text-[#71717A] mt-0.5 flex items-center gap-2">
+                    <p className="text-xs font-bold text-[#111827] truncate">{source.label}</p>
+                    <p className="text-[11px] text-[#6B7280] mt-0.5 flex items-center gap-2">
                       <span className="uppercase font-mono font-medium">{source.type}</span>
-                      <span>—</span>
-                      <span className="capitalize text-[#0D4B37] font-semibold">{source.status}</span>
+                      <span>-</span>
+                      <span className="capitalize text-[#134235] font-semibold">{source.status}</span>
                     </p>
                   </div>
                 </div>

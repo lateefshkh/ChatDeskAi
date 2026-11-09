@@ -27,20 +27,20 @@ export function TopNav({ email, isAdmin }: TopNavProps) {
 
   return (
     <div className="sticky top-4 z-40 mx-4 max-w-6xl lg:mx-auto">
-      <header className="bg-[#FAF9F5]/90 backdrop-blur-xl border border-[#E5E3DC] rounded-full px-5 py-2.5 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.06)] relative">
+      <header className="bg-[#FAF9F5]/90 backdrop-blur-xl border border-[#DDD7CD] rounded-full px-5 py-2.5 shadow-[0_10px_30px_-10px_rgba(19,66,53,0.06)] relative">
         <div className="h-11 flex items-center justify-between">
           {/* Logo */}
           <Link href="/dashboard" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#0D4B37] flex items-center justify-center text-white shadow-md">
+            <div className="w-8 h-8 rounded-full bg-[#134235] flex items-center justify-center text-white shadow-md">
               <Bot className="w-4 h-4" />
             </div>
-            <span className="text-base font-bold tracking-tight text-[#18181B]">
-              ChatDesk <span className="text-[#0D4B37] font-semibold">AI Automation</span>
+            <span className="text-base font-bold tracking-tight text-[#111827]">
+              ChatDesk <span className="text-[#134235] font-semibold">AI Automation</span>
             </span>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1.5 bg-[#ECEAE4]/60 p-1 rounded-full border border-[#DDD9D0]">
+          <nav className="hidden md:flex items-center gap-1.5 bg-[#ECEAE4]/60 p-1 rounded-full border border-[#DDD7CD]">
             {navItems.map(({ label, href }) => {
               const active = pathname === href || pathname.startsWith(href + "/");
               return (
@@ -49,8 +49,8 @@ export function TopNav({ email, isAdmin }: TopNavProps) {
                   href={href}
                   className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
                     active
-                      ? "bg-[#0D4B37] text-white shadow-sm"
-                      : "text-[#65656B] hover:text-[#18181B] hover:bg-white/50"
+                      ? "bg-[#134235] text-white shadow-sm"
+                      : "text-[#6B7280] hover:text-[#111827] hover:bg-white/50"
                   }`}
                 >
                   {label}
@@ -87,7 +87,7 @@ export function TopNav({ email, isAdmin }: TopNavProps) {
 
         {/* Mobile dropdown */}
         {mobileOpen && (
-          <div className="md:hidden absolute top-16 left-0 right-0 mt-2 bg-[#FAF9F5] border border-[#E5E3DC] rounded-3xl shadow-xl overflow-hidden z-30 p-3 space-y-1">
+          <div className="md:hidden absolute top-16 left-0 right-0 mt-2 bg-[#FAF9F5] border border-[#DDD7CD] rounded-3xl shadow-xl overflow-hidden z-30 p-3 space-y-1">
             <nav className="space-y-1">
               {navItems.map(({ label, href }) => {
                 const active = pathname === href || pathname.startsWith(href + "/");
@@ -98,8 +98,8 @@ export function TopNav({ email, isAdmin }: TopNavProps) {
                     onClick={() => setMobileOpen(false)}
                     className={`block px-4 py-2.5 rounded-2xl text-xs font-semibold transition-colors ${
                       active
-                        ? "bg-[#0D4B37] text-white"
-                        : "text-[#65656B] hover:text-[#18181B] hover:bg-black/5"
+                        ? "bg-[#134235] text-white"
+                        : "text-[#6B7280] hover:text-[#111827] hover:bg-black/5"
                     }`}
                   >
                     {label}

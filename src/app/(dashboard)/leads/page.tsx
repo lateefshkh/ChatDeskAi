@@ -14,17 +14,17 @@ async function LeadsContent() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#E8F3EE] border border-[#CDE5DA] text-[#0D4B37] text-xs font-semibold mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#E3EDE7] border border-[#C5DCD0] text-[#134235] text-xs font-semibold mb-2">
             <span>Customer Contacts</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-[#18181B] tracking-tight">Leads</h1>
-          <p className="text-xs text-[#71717A] mt-1">
+          <h1 className="text-3xl font-extrabold text-[#111827] tracking-tight">Leads</h1>
+          <p className="text-xs text-[#6B7280] mt-1">
             Visitors who shared their contact information in chat conversations.
           </p>
         </div>
 
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#E4E2DC] text-xs font-semibold text-[#0D4B37] shadow-sm self-start sm:self-auto">
-          <ShieldCheck className="w-4 h-4 text-[#0D4B37]" />
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#DDD7CD] text-xs font-semibold text-[#134235] shadow-sm self-start sm:self-auto">
+          <ShieldCheck className="w-4 h-4 text-[#134235]" />
           <span>AES-256 Encrypted</span>
         </div>
       </div>
@@ -59,7 +59,7 @@ async function LeadsContent() {
               </thead>
               <tbody className="divide-y divide-[#F0EFEA]">
                 {leads.map((lead) => {
-                  let phoneDisplay = "—";
+                  let phoneDisplay = "-";
                   if (lead.phoneEncrypted) {
                     try {
                       const encrypted = JSON.parse(lead.phoneEncrypted) as {

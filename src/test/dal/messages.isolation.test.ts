@@ -22,7 +22,7 @@ const tenantBId = randomUUID();
 let convAId: string;
 let convBId: string;
 
-describe("Messages DAL — Tenant Isolation", () => {
+describe("Messages DAL - Tenant Isolation", () => {
   beforeAll(async () => {
     await adminDb.insert(tenants).values([
       {

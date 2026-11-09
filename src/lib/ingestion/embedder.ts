@@ -5,7 +5,7 @@ import { pipeline, env } from "@huggingface/transformers";
 // Ya aap isko customize kar sakte hain
 env.cacheDir = "./.cache/transformers";
 
-// Singleton pipeline — pehli baar load hoga, phir memory mein rahega
+// Singleton pipeline - pehli baar load hoga, phir memory mein rahega
 let embedderPipeline: any = null;
 
 async function getEmbedder() {
