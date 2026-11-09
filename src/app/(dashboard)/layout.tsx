@@ -15,15 +15,11 @@ export default async function DashboardLayout({
   const isAdmin = ctx.user.role === "platform_admin";
 
   return (
-    <div className="min-h-screen bg-[#F4F3EE] text-[#18181B] relative">
-      {/* Soft Ambient Glows matching Homepage */}
-      <div className="fixed top-0 right-0 w-[500px] h-[500px] rounded-full bg-gradient-to-b from-amber-100/40 via-orange-100/20 to-transparent blur-3xl pointer-events-none" />
-      <div className="fixed bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-gradient-to-t from-emerald-100/30 via-teal-50/15 to-transparent blur-3xl pointer-events-none" />
-
+    <div className="min-h-screen bg-[#F4F3EE] bg-[radial-gradient(ellipse_at_top_right,rgba(200,109,81,0.06),transparent_50%),radial-gradient(ellipse_at_bottom_left,rgba(19,66,53,0.06),transparent_50%)] text-[#111827] relative overflow-x-clip max-w-full">
       {/* Floating Tactile TopNav */}
       <TopNav email={ctx.user.email} isAdmin={isAdmin} />
 
-      <main className="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8 relative z-10">
+      <main className="max-w-6xl mx-auto px-3.5 pt-20 pb-8 sm:px-6 sm:pt-24 sm:pb-10 lg:px-8 relative z-10">
         {children}
       </main>
     </div>

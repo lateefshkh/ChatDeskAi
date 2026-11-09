@@ -19,67 +19,70 @@ import {
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#F4F3EE] text-[#111827] selection:bg-[#134235] selection:text-white">
-      {/* ── Soft Warm Ambient Lighting (Storytelling depth) ──────────── */}
-      <div className="fixed top-0 right-0 w-[550px] h-[550px] rounded-full bg-gradient-to-b from-[#C86D51]/10 via-[#D97746]/5 to-transparent blur-3xl pointer-events-none" />
-      <div className="fixed bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-gradient-to-t from-[#134235]/15 via-[#98C7B0]/5 to-transparent blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-[#F4F3EE] bg-[radial-gradient(ellipse_at_top_right,rgba(200,109,81,0.06),transparent_50%),radial-gradient(ellipse_at_bottom_left,rgba(19,66,53,0.06),transparent_50%)] text-[#111827] selection:bg-[#134235] selection:text-white overflow-x-clip max-w-full">
+      {/* ── Fixed Floating Tactile Pill Navigation Bar ── */}
+      <header className="fixed top-0 left-0 right-0 z-50 pt-3 sm:pt-4 px-3 sm:px-4 pointer-events-none">
+        <div className="max-w-6xl mx-auto pointer-events-auto">
+          <div className="bg-[#FAF9F5]/95 backdrop-blur-md border border-[#DDD7CD] rounded-full px-3.5 py-2 sm:px-5 sm:py-2.5 shadow-[0_12px_32px_-8px_rgba(19,66,53,0.12),0_2px_6px_rgba(0,0,0,0.04)] relative">
+            <div className="h-10 sm:h-11 flex items-center justify-between gap-2 sm:gap-4">
+              {/* Logo */}
+              <Link href="/" className="flex items-center gap-2 shrink-0">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#134235] flex items-center justify-center text-white shadow-sm shrink-0">
+                  <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </div>
+                <span className="text-sm sm:text-base font-bold tracking-tight text-[#111827]">
+                  ChatDesk<span className="hidden sm:inline text-[#134235] font-semibold ml-1">AI Automation</span>
+                </span>
+              </Link>
 
-      {/* ── Floating Tactile Pill Navigation Bar ─────────────────────── */}
-      <header className="sticky top-5 z-50 max-w-6xl mx-auto px-4">
-        <div className="bg-[#FAF9F5]/90 backdrop-blur-xl border border-[#DDD7CD] rounded-full px-4 py-2.5 sm:px-6 sm:py-3 shadow-[0_10px_30px_-10px_rgba(19,66,53,0.06)] flex items-center justify-between gap-3">
-          <Link href="/" className="flex items-center gap-2.5 shrink-0 min-w-0">
-            <div className="w-8 h-8 rounded-full bg-[#134235] flex items-center justify-center text-white shadow-sm shrink-0">
-              <Bot className="w-4 h-4" />
+              {/* Desktop Nav */}
+              <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-xs sm:text-sm font-medium text-[#6B7280]">
+                <Link href="#features" className="hover:text-[#111827] transition-colors">
+                  Features
+                </Link>
+                <Link href="#preview" className="hover:text-[#111827] transition-colors">
+                  Interactive Preview
+                </Link>
+                <Link href="#how-it-works" className="hover:text-[#111827] transition-colors">
+                  How it Works
+                </Link>
+                <Link href="#pricing" className="hover:text-[#111827] transition-colors">
+                  Pricing
+                </Link>
+              </nav>
+
+              {/* Right Side Buttons */}
+              <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <Link
+                  href="/login"
+                  className="text-xs sm:text-sm font-semibold text-[#111827] px-3 py-1.5 sm:px-4 sm:py-2 rounded-full hover:bg-black/5 transition-colors whitespace-nowrap shrink-0"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/signup"
+                  className="tactile-pill-btn text-xs sm:text-sm font-semibold h-8 sm:h-9 px-3.5 sm:px-5 rounded-full inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 shadow-sm"
+                >
+                  <span>Get Started</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </div>
-            <span className="text-sm sm:text-base font-bold tracking-tight text-[#111827] whitespace-nowrap">
-              ChatDesk <span className="text-[#134235] font-semibold">AI Automation</span>
-            </span>
-          </Link>
-
-          <nav className="hidden md:flex items-center gap-7 text-xs sm:text-sm font-medium text-[#6B7280]">
-            <Link href="#features" className="hover:text-[#111827] transition-colors">
-              Features
-            </Link>
-            <Link href="#preview" className="hover:text-[#111827] transition-colors">
-              Interactive Preview
-            </Link>
-            <Link href="#how-it-works" className="hover:text-[#111827] transition-colors">
-              How it Works
-            </Link>
-            <Link href="#pricing" className="hover:text-[#111827] transition-colors">
-              Pricing
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-2 shrink-0">
-            <Link
-              href="/login"
-              className="text-xs sm:text-sm font-semibold text-[#111827] px-3 py-1.5 sm:px-4 sm:py-2 rounded-full hover:bg-black/5 transition-colors whitespace-nowrap shrink-0"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/signup"
-              className="tactile-pill-btn text-xs sm:text-sm font-semibold px-4 py-1.5 sm:px-5 sm:py-2 flex items-center gap-1.5 whitespace-nowrap shrink-0"
-            >
-              <span>Get Started</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
           </div>
         </div>
       </header>
 
       {/* ── Hero Section (Customer Narrative & High Trust) ────────────── */}
-      <section className="pt-14 pb-12 md:pt-22 md:pb-16 text-center max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
+      <section className="pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-32 md:pb-16 text-center max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Soft Tactile Pill Badge in Sage Frost */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#E3EDE7] border border-[#C5DCD0] shadow-sm text-xs sm:text-sm font-medium text-[#134235] mb-6">
+        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#E3EDE7]/80 border border-[#C5DCD0] shadow-sm text-xs sm:text-[13px] font-semibold text-[#134235] tracking-wide mb-6 sm:mb-8">
           <span>Website Support & Lead Capture</span>
           <span className="w-px h-3.5 bg-[#C5DCD0]" />
           <span className="text-[#134235] font-bold">10 Free Chats Included</span>
         </div>
 
         {/* Hero Title */}
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#111827] max-w-3xl mx-auto leading-[1.12] mb-5">
+        <h1 className="text-4xl sm:text-5xl md:text-[58px] lg:text-[62px] font-bold tracking-tight text-[#111827] max-w-3xl mx-auto leading-[1.1] mb-5 sm:mb-6">
           Turn your website into a{" "}
           <span className="text-[#134235]">
             24/7 customer assistant
@@ -87,23 +90,23 @@ export default function HomePage() {
           .
         </h1>
 
-        <p className="text-sm sm:text-base md:text-lg text-[#4B5563] max-w-2xl mx-auto leading-relaxed mb-8 font-normal">
+        <p className="text-base sm:text-lg md:text-[19px] text-[#4B5563] max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 font-normal">
           Upload website links or product documentation. ChatDesk answers visitor inquiries accurately
           from your content and captures verified sales leads automatically.
         </p>
 
-        {/* Tactile Action Pills */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+        {/* Tactile Action Pills (Proper sizing, ratios, and single-line layout) */}
+        <div className="inline-flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 mx-auto w-full sm:w-auto">
           <Link
             href="/signup"
-            className="tactile-pill-btn w-full sm:w-auto px-7 py-3 text-sm sm:text-base font-semibold flex items-center justify-center gap-2"
+            className="tactile-pill-btn h-12 px-7 text-sm sm:text-base font-semibold inline-flex items-center justify-center gap-2 whitespace-nowrap shadow-md hover:shadow-lg transition-all w-full sm:w-auto"
           >
             <span>Start with 10 Free Chats</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
           <Link
             href="#preview"
-            className="tactile-pill-secondary w-full sm:w-auto px-6 py-3 text-sm sm:text-base font-semibold flex items-center justify-center gap-2"
+            className="tactile-pill-secondary h-12 px-6 text-sm sm:text-base font-semibold inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all w-full sm:w-auto"
           >
             <Activity className="w-4 h-4 text-[#134235]" />
             <span>Explore Architecture</span>
@@ -111,7 +114,7 @@ export default function HomePage() {
         </div>
 
         {/* Trust Badges */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5 text-xs sm:text-sm text-[#4B5563]">
+        <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-2.5 text-xs sm:text-sm text-[#52525B] font-medium">
           <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
             <Check className="w-4 h-4 text-[#134235] shrink-0" />
             <span>No card needed</span>
@@ -128,9 +131,9 @@ export default function HomePage() {
       </section>
 
       {/* ── 3D Tactile Showcase (Matches Reference Photo Composition) ─── */}
-      <section id="preview" className="max-w-6xl mx-auto px-4 sm:px-6 py-6 relative z-10">
+      <section id="preview" className="max-w-6xl mx-auto px-3 sm:px-6 py-6 relative z-10 scroll-mt-24 sm:scroll-mt-28">
         {/* The Raised Clay Board Container */}
-        <div className="bg-[#ECEAE4] p-5 sm:p-8 rounded-[36px] border border-[#DDD9D0] shadow-[0_24px_60px_-15px_rgba(0,0,0,0.07)]">
+        <div className="bg-[#ECEAE4] p-4 sm:p-8 rounded-[28px] sm:rounded-[36px] border border-[#DDD7CD] shadow-[0_24px_60px_-15px_rgba(19,66,53,0.06)] overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch">
             {/* Card 1 (Tall Left White Hero Card - Like Left Card in Photo) */}
             <div className="md:col-span-5 bg-white rounded-[32px] p-6 sm:p-7 border border-black/[0.04] shadow-[0_16px_36px_-10px_rgba(0,0,0,0.06)] flex flex-col justify-between">
@@ -182,11 +185,11 @@ export default function HomePage() {
               </div>
 
               {/* Bottom Tactile Pill Actions */}
-              <div className="pt-2 flex items-center gap-2.5">
-                <span className="tactile-pill-btn text-xs px-5 py-2 font-medium cursor-pointer">
+              <div className="pt-3 flex items-center gap-2.5">
+                <span className="tactile-pill-btn h-8 sm:h-9 px-4 sm:px-5 text-xs font-semibold rounded-full inline-flex items-center justify-center cursor-pointer shadow-sm">
                   Try Demo
                 </span>
-                <span className="tactile-pill-secondary text-xs px-4 py-2 font-medium text-[#4B5563]">
+                <span className="tactile-pill-secondary h-8 sm:h-9 px-3.5 sm:px-4 text-xs font-medium rounded-full inline-flex items-center justify-center text-[#4B5563]">
                   99.8% Accuracy
                 </span>
               </div>
@@ -245,15 +248,15 @@ export default function HomePage() {
                   </div>
 
                   <div className="pt-3">
-                    <span className="tactile-pill-btn text-xs px-4 py-1.5 font-medium inline-block">
+                    <span className="tactile-pill-btn h-8 px-4 text-xs font-semibold rounded-full inline-flex items-center justify-center shadow-sm cursor-pointer">
                       View Metrics
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* Row 2: Heritage Deep Pine Feature Card */}
-              <div className="bg-gradient-to-br from-[#134235] via-[#0F352A] to-[#0A261E] rounded-[30px] p-6 sm:p-7 text-white shadow-[0_20px_40px_-12px_rgba(19,66,53,0.38)] flex flex-col sm:flex-row items-center justify-between gap-5">
+              {/* Row 2: Heritage Deep Pine Feature Card (Fills down to bottom border) */}
+              <div className="bg-gradient-to-br from-[#134235] via-[#0F352A] to-[#0A261E] rounded-[30px] p-6 sm:p-7 text-white shadow-[0_20px_40px_-12px_rgba(19,66,53,0.38)] flex-1 flex flex-col sm:flex-row items-center justify-between gap-5">
                 <div className="space-y-2">
                   <div className="text-xs font-bold uppercase tracking-wider text-[#98C7B0] flex items-center gap-1.5">
                     <ShieldCheck className="w-4 h-4 text-[#98C7B0]" />
@@ -304,7 +307,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Bento Grid Features ───────────────────────────────────────── */}
-      <section id="features" className="py-16 max-w-6xl mx-auto px-4 sm:px-6">
+      <section id="features" className="py-16 max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-24 sm:scroll-mt-28">
         <div className="text-center max-w-2xl mx-auto mb-14">
           <div className="text-xs font-bold text-[#134235] uppercase tracking-wider mb-2">
             Product Capabilities
@@ -319,7 +322,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* Card 1 */}
-          <div className="bg-white rounded-[28px] p-7 border border-black/[0.04] shadow-[0_12px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all">
+          <div className="bg-white rounded-[28px] p-7 border border-black/[0.04] shadow-[0_12px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-lg transition-shadow duration-200">
             <div className="w-11 h-11 rounded-2xl bg-[#E3EDE7] text-[#134235] flex items-center justify-center mb-4">
               <Globe className="w-5 h-5" />
             </div>
@@ -330,7 +333,7 @@ export default function HomePage() {
           </div>
 
           {/* Card 2 */}
-          <div className="bg-white rounded-[28px] p-7 border border-black/[0.04] shadow-[0_12px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all">
+          <div className="bg-white rounded-[28px] p-7 border border-black/[0.04] shadow-[0_12px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-lg transition-shadow duration-200">
             <div className="w-11 h-11 rounded-2xl bg-[#F8EBE6] text-[#C86D51] flex items-center justify-center mb-4">
               <Sparkles className="w-5 h-5" />
             </div>
@@ -341,7 +344,7 @@ export default function HomePage() {
           </div>
 
           {/* Card 3 */}
-          <div className="bg-white rounded-[28px] p-7 border border-black/[0.04] shadow-[0_12px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all">
+          <div className="bg-white rounded-[28px] p-7 border border-black/[0.04] shadow-[0_12px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-lg transition-shadow duration-200">
             <div className="w-11 h-11 rounded-2xl bg-[#E3EDE7] text-[#134235] flex items-center justify-center mb-4">
               <Users className="w-5 h-5" />
             </div>
@@ -352,7 +355,7 @@ export default function HomePage() {
           </div>
 
           {/* Card 4 */}
-          <div className="bg-white rounded-[28px] p-7 border border-black/[0.04] shadow-[0_12px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all">
+          <div className="bg-white rounded-[28px] p-7 border border-black/[0.04] shadow-[0_12px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-lg transition-shadow duration-200">
             <div className="w-11 h-11 rounded-2xl bg-[#F0EFEA] text-[#111827] flex items-center justify-center mb-4">
               <Search className="w-5 h-5" />
             </div>
@@ -363,7 +366,7 @@ export default function HomePage() {
           </div>
 
           {/* Card 5 */}
-          <div className="bg-white rounded-[28px] p-7 border border-black/[0.04] shadow-[0_12px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all">
+          <div className="bg-white rounded-[28px] p-7 border border-black/[0.04] shadow-[0_12px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-lg transition-shadow duration-200">
             <div className="w-11 h-11 rounded-2xl bg-[#E3EDE7] text-[#134235] flex items-center justify-center mb-4">
               <Lock className="w-5 h-5" />
             </div>
@@ -374,7 +377,7 @@ export default function HomePage() {
           </div>
 
           {/* Card 6 */}
-          <div className="bg-white rounded-[28px] p-7 border border-black/[0.04] shadow-[0_12px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all">
+          <div className="bg-white rounded-[28px] p-7 border border-black/[0.04] shadow-[0_12px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-lg transition-shadow duration-200">
             <div className="w-11 h-11 rounded-2xl bg-[#F8EBE6] text-[#C86D51] flex items-center justify-center mb-4">
               <Code2 className="w-5 h-5" />
             </div>
@@ -387,7 +390,7 @@ export default function HomePage() {
       </section>
 
       {/* ── 3-Step Process ────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-16 bg-[#ECEAE4]/60 border-y border-[#DDD7CD]">
+      <section id="how-it-works" className="py-16 bg-[#ECEAE4]/60 border-y border-[#DDD7CD] scroll-mt-24 sm:scroll-mt-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold text-[#111827]">
@@ -425,7 +428,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Pricing Matrix ────────────────────────────────────────────── */}
-      <section id="pricing" className="py-20 max-w-6xl mx-auto px-4 sm:px-6">
+      <section id="pricing" className="py-20 max-w-6xl mx-auto px-4 sm:px-6 scroll-mt-24 sm:scroll-mt-28">
         <div className="text-center max-w-xl mx-auto mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-[#111827] mb-2">
             Simple, transparent pricing
@@ -462,7 +465,7 @@ export default function HomePage() {
             </div>
             <Link
               href="/signup"
-              className="tactile-pill-secondary mt-8 w-full py-3 text-center text-sm font-semibold block"
+              className="tactile-pill-secondary mt-8 w-full h-11 text-sm font-semibold rounded-full inline-flex items-center justify-center"
             >
               Start Free
             </Link>
@@ -497,7 +500,7 @@ export default function HomePage() {
             </div>
             <Link
               href="/signup"
-              className="tactile-pill-btn mt-8 w-full py-3 text-center text-sm font-semibold block"
+              className="tactile-pill-btn mt-8 w-full h-11 text-sm font-semibold rounded-full inline-flex items-center justify-center shadow-md"
             >
               Buy Starter
             </Link>
@@ -529,7 +532,7 @@ export default function HomePage() {
             </div>
             <Link
               href="/signup"
-              className="tactile-pill-secondary mt-8 w-full py-3 text-center text-sm font-semibold block"
+              className="tactile-pill-secondary mt-8 w-full h-11 text-sm font-semibold rounded-full inline-flex items-center justify-center"
             >
               Start Growth
             </Link>
@@ -548,7 +551,7 @@ export default function HomePage() {
           </p>
           <Link
             href="/signup"
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white text-[#134235] font-bold text-sm hover:bg-[#F7F5F0] transition-colors shadow-lg"
+            className="inline-flex items-center gap-2 h-12 px-8 rounded-full bg-white text-[#134235] font-bold text-sm hover:bg-[#F7F5F0] transition-all shadow-lg hover:shadow-xl active:scale-[0.98]"
           >
             <span>Start Free with 10 Chats</span>
             <ArrowRight className="w-4 h-4" />

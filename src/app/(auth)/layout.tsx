@@ -5,7 +5,7 @@ import { Bot, Sparkles, ShieldCheck, TrendingUp, Check } from "lucide-react";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col lg:grid lg:grid-cols-[1.15fr_1fr] bg-[#F4F3EE] text-[#111827]">
+    <div className="min-h-screen flex flex-col lg:grid lg:grid-cols-[1.15fr_1fr] bg-[#F4F3EE] text-[#111827] overflow-x-clip max-w-full">
       {/* ── Left: Tactile 3D Showcase (Trusty Storytelling Theme) ────── */}
       <div className="hidden lg:flex flex-col justify-between p-12 bg-[#ECEAE4] border-r border-[#DDD7CD] relative overflow-hidden">
         {/* Soft Warm Ambient Lighting */}

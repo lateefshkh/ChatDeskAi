@@ -137,7 +137,7 @@ async function DashboardContent() {
         <div className="md:col-span-6 lg:col-span-5 bg-gradient-to-br from-[#C86D51] via-[#B85D42] to-[#8C3F2B] rounded-[28px] p-7 text-white shadow-[0_20px_40px_-12px_rgba(200,109,81,0.38)] flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-white bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full border border-white/25">
+              <span className="text-xs font-bold uppercase tracking-wider text-white bg-white/20 px-3 py-1 rounded-full border border-white/25">
                 Story & Impact
               </span>
               <TrendingUp className="w-5 h-5 text-white" />
@@ -187,7 +187,7 @@ async function DashboardContent() {
               Every answer is anchored in your verified documentation sources. Zero hallucinations, backed by strict tenant-level database isolation.
             </p>
 
-            <div className="grid grid-cols-3 gap-3 bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/15 text-center">
+            <div className="grid grid-cols-3 gap-3 bg-white/10 rounded-2xl p-4 border border-white/15 text-center">
               <div>
                 <div className="text-2xl font-bold font-mono text-white">{stats.sources.ready}</div>
                 <div className="text-xs text-[#98C7B0] mt-0.5 font-medium">Sources Active</div>
