@@ -1,0 +1,227 @@
+[
+  {
+    "sourceLabel": "salon (url)",
+    "question": "What is salon about?",
+    "type": "in_scope",
+    "answer": "**Mansa Salon Private Limited**  \n| Feature | Details |\n|---------|---------|\n| **Brand** | Mansa Salon Private Limited |\n| **Core Offering** | Beauty & salon services (hair, nails, color, etc.) |\n| **Website Highlights** | *Our Story*, *Trending*, *Services*, *Salon Locations*, *Find My Salon*, *Bo",
+    "passed": true,
+    "reason": "Answered correctly",
+    "similarity": 0.6336167940179334
+  },
+  {
+    "sourceLabel": "salon (url)",
+    "question": "Summarize the content of salon.",
+    "type": "in_scope",
+    "answer": "**Summary of the Salon’s Content (based on the provided references)**  \n\n| Section | Key Details |\n|---------|-------------|\n| **Brand** | Mansa Salon Private Limited (©2024) |\n| **Core Pages** | *OUR STORY*, *TRENDING*, *SERVICES*, *SALON LOCATIONS*, *OTHER*, *FIND MY SALON*, *BOOK APPOINTMENT* |\n|",
+    "passed": true,
+    "reason": "Answered correctly",
+    "similarity": 0.6167275682173702
+  },
+  {
+    "sourceLabel": "salon (url)",
+    "question": "What is the weather in salon?",
+    "type": "out_of_scope",
+    "answer": "I’m sorry, but I don’t have information about that in my knowledge base. Would you like me to connect you with the owner?",
+    "passed": true,
+    "reason": "Correctly declined",
+    "similarity": 0.45448845814682776
+  },
+  {
+    "sourceLabel": "salon (url)",
+    "question": "Who is the Prime Minister of India?",
+    "type": "out_of_scope",
+    "answer": "I’m sorry, but I don’t have information about that in my knowledge base. Would you like me to connect you with the owner?",
+    "passed": true,
+    "reason": "Correctly declined",
+    "similarity": 0.19989964153561185
+  },
+  {
+    "sourceLabel": "nvidia (url)",
+    "question": "What is nvidia about?",
+    "type": "in_scope",
+    "answer": "**NVIDIA – What the reference data says**\n\n| Category | Key Points (from the reference data) |\n|----------|--------------------------------------|\n| **Corporate Identity** | NVIDIA Corporation – a technology company. |\n| **Mission & Vision** | “NVIDIA is the result of the decades‑long pursuit of a v",
+    "passed": true,
+    "reason": "Answered correctly",
+    "similarity": 0.6278496270720871
+  },
+  {
+    "sourceLabel": "nvidia (url)",
+    "question": "Summarize the content of nvidia.",
+    "type": "in_scope",
+    "answer": "**Summary of NVIDIA (based on the provided reference data)**  \n\n| **Category** | **Key Points** |\n|--------------|----------------|\n| **Products & Documentation** | • Product literature for Virtual GPU and RTX PRO.<br>• Documentation and on‑demand sessions for developers.<br>• NVIDIA App for PC game",
+    "passed": true,
+    "reason": "Answered correctly",
+    "similarity": 0.5828222756142276
+  },
+  {
+    "sourceLabel": "nvidia (url)",
+    "question": "What is the weather in nvidia?",
+    "type": "out_of_scope",
+    "answer": "I’m sorry, but I don’t have information about that in my knowledge base. Would you like me to connect you with the owner?",
+    "passed": true,
+    "reason": "Correctly declined",
+    "similarity": 0.4804085848078213
+  },
+  {
+    "sourceLabel": "nvidia (url)",
+    "question": "Who is the Prime Minister of India?",
+    "type": "out_of_scope",
+    "answer": "I’m sorry, but I don’t have information about that in my knowledge base. Would you like me to connect you with the owner?",
+    "passed": true,
+    "reason": "Correctly declined",
+    "similarity": 0.19989964153561185
+  },
+  {
+    "sourceLabel": "salon (url)",
+    "question": "What is salon about?",
+    "type": "in_scope",
+    "answer": "**Mansa Salon Private Limited**\n\n| Feature | Details |\n|---------|---------|\n| **Brand** | Mansa Salon Private Limited |\n| **Core Offering** | Beauty & salon services (hair, nails, color, ambience, events, etc.) |\n| **Website Sections** | *Our Story*, *Trending*, *Services*, *Salon Locations*, *Find",
+    "passed": true,
+    "reason": "Answered correctly",
+    "similarity": 0.6336167940179334
+  },
+  {
+    "sourceLabel": "salon (url)",
+    "question": "Summarize the content of salon.",
+    "type": "in_scope",
+    "answer": "**Summary of the Mansa Salon website**\n\n| **Section** | **Key Content** |\n|-------------|-----------------|\n| **Header** | *OUR STORY* – *TRENDING* – *SERVICES* – *SALON LOCATIONS* – *OTHER* – *FIND MY SALON* – *BOOK APPOINTMENT* |\n| **Products** | • **L’Oréal Professionnel Tecniart Depolish Deconst",
+    "passed": true,
+    "reason": "Answered correctly",
+    "similarity": 0.6167275682173702
+  },
+  {
+    "sourceLabel": "salon (url)",
+    "question": "What is the weather in salon?",
+    "type": "out_of_scope",
+    "answer": "I'm sorry, but I don't have information about that in my knowledge base. Would you like me to connect you with the owner?",
+    "passed": true,
+    "reason": "Correctly declined",
+    "similarity": 0.45448845814682776
+  },
+  {
+    "sourceLabel": "salon (url)",
+    "question": "Who is the Prime Minister of India?",
+    "type": "out_of_scope",
+    "answer": "I’m sorry, but I don’t have information about that in my knowledge base. Would you like me to connect you with the owner?",
+    "passed": true,
+    "reason": "Correctly declined",
+    "similarity": 0.19989964153561185
+  },
+  {
+    "sourceLabel": "apple (url)",
+    "question": "What is apple about?",
+    "type": "in_scope",
+    "answer": "**Apple Inc. – Key Highlights (from the provided references)**  \n\n| **Aspect** | **Details** |\n|------------|-------------|\n| **Core Mission** | *“At Apple, we’re more focused on building tomorrow than remembering yesterday.”* |\n| **Community & Collaboration** | *“Thanking the millions of people who",
+    "passed": true,
+    "reason": "Answered correctly",
+    "similarity": 0.5403384747895077
+  },
+  {
+    "sourceLabel": "apple (url)",
+    "question": "Summarize the content of apple.",
+    "type": "in_scope",
+    "answer": "**Apple Inc. – Key Highlights**\n\n| **Category** | **Details** |\n|--------------|-------------|\n| **Core Services** | • **Apple Store** (online & physical) <br>• **iCloud.com** <br>• **Entertainment**: Apple TV, Apple Music, Apple Arcade, Apple Fitness+, Apple News+, Apple Podcasts, Apple Books <br>•",
+    "passed": true,
+    "reason": "Answered correctly",
+    "similarity": 0.5328044405371294
+  },
+  {
+    "sourceLabel": "apple (url)",
+    "question": "What is the weather in apple?",
+    "type": "out_of_scope",
+    "answer": "**Apple Device Operating Conditions**\n\n| Parameter | Value |\n|-----------|-------|\n| **Ambient Temperature** | 15 °C – 30 °C |\n| **Relative Humidity** | 30 % – 70 % |\n| **Notes** | Accuracy may decrease when audio is playing for an extended period at high volume levels. |\n\n*These conditions are spec",
+    "passed": false,
+    "reason": "Answered out-of-scope question",
+    "similarity": 0.39020146306215525
+  },
+  {
+    "sourceLabel": "apple (url)",
+    "question": "Who is the Prime Minister of India?",
+    "type": "out_of_scope",
+    "answer": "I’m sorry, but I don’t have information about that in my knowledge base. Would you like me to connect you with the owner?",
+    "passed": true,
+    "reason": "Correctly declined",
+    "similarity": 0.19989964153561185
+  },
+  {
+    "sourceLabel": "cartier (url)",
+    "question": "What is cartier about?",
+    "type": "in_scope",
+    "answer": "**Cartier Overview**\n\n| Topic | Details |\n|-------|---------|\n| **Brand Focus** | Cartier is a luxury Maison that offers jewellery, watches, leather goods, and accessories. |\n| **Core Services** | • **Day‑to‑day care** – advice on preserving the beauty of creations.<br>• **Warranty** – Cartier Inter",
+    "passed": true,
+    "reason": "Answered correctly",
+    "similarity": 0.35232507843347954
+  },
+  {
+    "sourceLabel": "cartier (url)",
+    "question": "Summarize the content of cartier.",
+    "type": "in_scope",
+    "answer": "**Summary of Cartier’s Services & Offerings**\n\n| Category | Key Points |\n|----------|------------|\n| **Day‑to‑Day Care** | • Instructions for use and care recommendations for all creations.<br>• Daily tips to preserve beauty and longevity. |\n| **Warranty** | • Cartier International Warranties availa",
+    "passed": true,
+    "reason": "Answered correctly",
+    "similarity": 0.424512193484931
+  },
+  {
+    "sourceLabel": "cartier (url)",
+    "question": "What is the weather in cartier?",
+    "type": "out_of_scope",
+    "answer": "I’m sorry, but I don’t have information about that in my knowledge base. Would you like me to connect you with the owner?",
+    "passed": true,
+    "reason": "Correctly declined",
+    "similarity": 0.24313881285393837
+  },
+  {
+    "sourceLabel": "cartier (url)",
+    "question": "Who is the Prime Minister of India?",
+    "type": "out_of_scope",
+    "answer": "I’m sorry, but I don’t have information about that in my knowledge base. Would you like me to connect you with the owner?",
+    "passed": true,
+    "reason": "Correctly declined",
+    "similarity": 0.19989964153561185
+  },
+  {
+    "sourceLabel": "lateef shaikh resume (pdf)",
+    "question": "What is lateef shaikh resume about?",
+    "type": "in_scope",
+    "answer": "**Lateef Shaikh – Full‑Stack Developer Resume Overview**\n\n| Section | Details |\n|---------|---------|\n| **Contact** | Phone: +91 97692 12600 <br> Email: slatif200426@gmail.com <br> GitHub: [github.com/lateefshkh/](https://github.com/lateefshkh/) <br> Portfolio: [lateefshinobi.vercel.app](https://lat",
+    "passed": true,
+    "reason": "Answered correctly",
+    "similarity": 0.3466462647627539
+  },
+  {
+    "sourceLabel": "lateef shaikh resume (pdf)",
+    "question": "Summarize the content of lateef shaikh resume.",
+    "type": "in_scope",
+    "answer": "**Lateef Shaikh – Full‑Stack Developer (Resume Summary)**  \n\n| **Section** | **Key Points** |\n|-------------|----------------|\n| **Contact** | Phone: **+91 97692 12600**  <br> Email: **slatif200426@gmail.com**  <br> GitHub: **github.com/lateefshkh/**  <br> Portfolio: **lateefshinobi.vercel.app/**  <",
+    "passed": true,
+    "reason": "Answered correctly",
+    "similarity": 0.3274048266025082
+  },
+  {
+    "sourceLabel": "lateef shaikh resume (pdf)",
+    "question": "What is the weather in lateef shaikh resume?",
+    "type": "out_of_scope",
+    "answer": "I’m sorry, but I don’t have information about that in my knowledge base. Would you like me to connect you with the owner?",
+    "passed": true,
+    "reason": "Correctly declined",
+    "similarity": 0.2827905011158699
+  },
+  {
+    "sourceLabel": "lateef shaikh resume (pdf)",
+    "question": "Who is the Prime Minister of India?",
+    "type": "out_of_scope",
+    "answer": "I'm sorry, but I don't have information about that in my knowledge base. Would you like me to connect you with the owner?",
+    "passed": true,
+    "reason": "Correctly declined",
+    "similarity": 0.19989964153561185
+  },
+  {
+    "sourceLabel": "salon vs nvidia",
+    "question": "Tell me about salon's pricing.",
+    "type": "cross_check",
+    "answer": "**Salon Product Pricing (in INR)**  \n\n| Category | Product | Price |\n|----------|---------|-------|\n| **At‑Home Treatments** | De Fabulous Reviver Hair Repair Treatment (250 ml) | **₹1,710.00** |\n| | L’Oréal Professionnel Serie Expert Aminexil At‑Home Treatment (10 × 6 ml) | **₹1,830.00** |\n| | L’Or",
+    "passed": true,
+    "reason": "No cross-contamination",
+    "similarity": 0
+  }
+]

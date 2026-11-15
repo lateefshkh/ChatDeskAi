@@ -6,6 +6,7 @@ import { requireAuth } from "@/lib/auth/require-auth";
 import { getConversationById } from "@/lib/dal/conversations";
 import { listMessagesByConversation } from "@/lib/dal/messages";
 import { ArrowLeft, User, Bot } from "lucide-react";
+import { MarkdownRenderer } from "@/components/chat/markdown-renderer";
 
 async function ConversationDetailContent({
   conversationId,
@@ -58,13 +59,19 @@ async function ConversationDetailContent({
             </div>
 
             <div
-              className={`max-w-[80%] px-5 py-3.5 rounded-[22px] text-xs leading-relaxed ${
+              className={`max-w-[80%] px-5 py-3.5 rounded-[22px] text-xs leading-relaxed overflow-hidden ${
                 m.role === "user"
                   ? "bg-[#0D4B37] text-white rounded-tr-sm shadow-sm"
                   : "bg-[#F8F7F3] border border-[#EDECE6] text-[#18181B] rounded-tl-sm shadow-sm"
               }`}
             >
-              <div className="whitespace-pre-wrap">{m.content}</div>
+              {/* ✅ FIX: Markdown renderer use karo assistant ke liye */}
+              {m.role === "assistant" ? (
+                <MarkdownRenderer content={m.content} />
+              ) : (
+                <div className="whitespace-pre-wrap">{m.content}</div>
+              )}
+
               <div
                 className={`text-[10px] mt-1 font-mono ${
                   m.role === "user" ? "text-white/70 text-right" : "text-[#A1A1AA]"

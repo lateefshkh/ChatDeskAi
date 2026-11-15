@@ -151,13 +151,33 @@ export function ChatClient({ publicId }: { publicId: string }) {
                   className={`max-w-[85%] md:max-w-[75%] px-5 py-3.5 text-xs leading-relaxed ${
                     m.role === "user"
                       ? "bg-[#134235] text-white rounded-[22px] rounded-br-sm shadow-sm"
-                      : "bg-[#F8F7F3] border border-[#EDECE6] text-[#111827] rounded-[22px] rounded-bl-sm shadow-sm"
+                      : "bg-[#F8F7F3] border border-[#EDECE6] text-[#111827] rounded-[22px] rounded-bl-sm shadow-sm overflow-hidden"
                   }`}
                 >
                   {m.content ? (
                     m.role === "assistant" ? (
                       <div className="prose prose-sm max-w-none text-xs text-[#111827] prose-p:leading-relaxed prose-headings:font-bold prose-headings:text-[#111827] prose-strong:text-[#111827] prose-a:text-[#134235] prose-a:underline">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          rehypePlugins={[rehypeRaw]}
+                          components={{
+                            // ✅ FIX: Table ko scrollable wrapper mein daalo
+                            table: ({ node, ...props }) => (
+                              <div className="w-full overflow-x-auto my-3 rounded-lg border border-[#EDECE6]">
+                                <table className="min-w-full text-left text-[11px] border-collapse" {...props} />
+                              </div>
+                            ),
+                            thead: ({ node, ...props }) => (
+                              <thead className="bg-[#F4F3EE]" {...props} />
+                            ),
+                            th: ({ node, ...props }) => (
+                              <th className="px-3 py-2 font-semibold text-[#111827] border-b border-[#EDECE6] whitespace-nowrap" {...props} />
+                            ),
+                            td: ({ node, ...props }) => (
+                              <td className="px-3 py-2 border-b border-[#EDECE6] whitespace-nowrap" {...props} />
+                            ),
+                          }}
+                        >
                           {m.content}
                         </ReactMarkdown>
                       </div>

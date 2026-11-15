@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { DeleteAccountModal } from "@/components/auth/delete-account-modal";
 
 interface AccountMenuProps {
@@ -22,7 +23,6 @@ export function AccountMenu({ email }: AccountMenuProps) {
         method: "POST",
         credentials: "include",
       });
-      // Force full page reload to clear all React state and browser memory
       window.location.href = "/login?loggedout=1";
     } catch {
       setLoggingOut(false);
@@ -50,7 +50,6 @@ export function AccountMenu({ email }: AccountMenuProps) {
       {/* Dropdown */}
       {open && (
         <>
-          {/* Click-away overlay */}
           <div
             className="fixed inset-0 z-10"
             onClick={() => setOpen(false)}
@@ -62,6 +61,15 @@ export function AccountMenu({ email }: AccountMenuProps) {
               <p className="text-xs text-neutral-500">Signed in as</p>
               <p className="text-sm font-medium text-neutral-900 truncate">{email}</p>
             </div>
+
+            {/* ✅ Settings link */}
+            <Link
+              href="/settings"
+              onClick={() => setOpen(false)}
+              className="block w-full text-left px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
+            >
+              Settings
+            </Link>
 
             <button
               onClick={() => {
@@ -84,7 +92,6 @@ export function AccountMenu({ email }: AccountMenuProps) {
         </>
       )}
 
-      {/* Delete account modal */}
       <DeleteAccountModal
         open={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
