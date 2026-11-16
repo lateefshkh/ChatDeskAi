@@ -20,6 +20,13 @@ export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
   secret: env.BETTER_AUTH_SECRET,
 
+  // ✅ YAHAN APNA VERCEL URL DAALO
+  trustedOrigins: [
+    "http://localhost:3000",
+    "https://chatdesk-ai.vercel.app", // <-- Apna actual Vercel URL yahan daalo
+    "https://*.vercel.app", // (Optional) preview deployments ke liye
+  ],
+
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
@@ -109,8 +116,6 @@ export const auth = betterAuth({
       },
     },
   },
-
-  trustedOrigins: [env.BETTER_AUTH_URL],
 });
 
 export type Auth = typeof auth;
