@@ -11,7 +11,7 @@ import { extractTextFromSheet } from "@/lib/ingestion/parsers/sheet";
 import { handleApiError, ValidationError } from "@/lib/errors";
 import { createHash } from "node:crypto";
 
-export const maxDuration = 600;
+export const maxDuration = 300;
 
 const jsonBodySchema = z.object({
   type: z.enum(["url", "text"]),
